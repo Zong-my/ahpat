@@ -1,0 +1,29 @@
+{
+  "cols": 18,
+  "duplicate_time_rate_by_series": {
+    "twinsolar_iut_total_load": 0.0
+  },
+  "inferred_step_by_series": {
+    "twinsolar_iut_total_load": "0 days 00:10:00"
+  },
+  "notes": [
+    "First-pass target is `Total` from `IUT_load.txt`.",
+    "PV and meteorological files are joined by timestamp and retained as covariates.",
+    "Native 10-minute resolution is preserved."
+  ],
+  "rows": 105120,
+  "series_count": 1,
+  "source_paths": [
+    "(removed: original source path)"
+  ],
+  "split_counts": {
+    "test": 15768,
+    "train": 73584,
+    "validation": 15768
+  },
+  "target": "IUT_load.Total",
+  "target_missing_rate": 0.0,
+  "timestamp_max": "2022-12-31 23:50:00+04:00",
+  "timestamp_min": "2021-01-01 00:00:00+04:00",
+  "timestamp_missing_rate": 0.0
+}

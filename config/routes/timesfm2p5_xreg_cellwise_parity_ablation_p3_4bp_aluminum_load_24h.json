@@ -1,0 +1,21 @@
+{
+  "lock_id": "p3_4by_timesfm2p5_xreg_aluminum_load_24h",
+  "model_id": "timesfm2p5",
+  "route_id": "timesfm2p5_xreg_cellwise_parity_ablation_p3_4bp",
+  "domain_id": "aluminum_load",
+  "horizon": "24h",
+  "portfolio_group": "tsfm",
+  "adaptation_kind": "xreg_covariate_adaptation_no_parameter_finetune",
+  "seed": "",
+  "best_params": {},
+  "validation_wape": "0.0011033990280483",
+  "selected_config_or_variant": "timesfm2p5_p3_4bp_context_covariates_plus_lead_ridge1e_3",
+  "selected_feature_policy": "context_covariates_plus_lead_ridge1e_3",
+  "full_train_or_refit": "True",
+  "uses_cuda": "True",
+  "parameter_count_total": "231289280.0",
+  "parameter_count_trainable": "0.0",
+  "source_manifest_relative": "results/energy_tsfm_tuning/p3_4bp_timesfm2p5_parity_ablation_validation_v0_codex_20260517/p3_4bv_timesfm2p5_xreg_aluminum_load_24h_context_covariates_plus_lead_ridge1e_3_stride4full_codex_20260517_torchcuda_b64/manifest.json",
+  "p5_batch_size": "64.0",
+  "p5_eval_batch_size": "64.0"
+}

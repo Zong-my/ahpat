@@ -1,0 +1,49 @@
+{
+  "conditional_or_deferred_candidates": [
+    "h1_fallback_prototype",
+    "sundial",
+    "tirex"
+  ],
+  "created_utc": "2026-05-16T09:50:13.477452+00:00",
+  "h2_policy_lock_table_csv": "data/energy_tsfm_tuning/p3_4ba_p5_pre_final_lock_manifest_v0_codex_20260516/p3_4ba_h2_policy_lock_table.csv",
+  "h2_primary_policy": "cell_validation_winner",
+  "h3_metric_lock_table_csv": "data/energy_tsfm_tuning/p3_4ba_p5_pre_final_lock_manifest_v0_codex_20260516/p3_4ba_h3_metric_lock_table.csv",
+  "h3_primary_metric": "decision_weighted_wape",
+  "h3_primary_scope": "critical_union",
+  "hard_gate_count": 8,
+  "hard_gates_passed": true,
+  "important_boundary": "P5-pre lock artifact only; no model execution and no test access.",
+  "initial_p5_main_candidate_count": 5,
+  "initial_p5_main_candidates": [
+    "chronos2",
+    "itransformer",
+    "lightgbm",
+    "nbeatsx",
+    "timesfm2p5"
+  ],
+  "input_artifacts": {
+    "p3_4av_manifest": "data/energy_tsfm_tuning/p3_4av_p5_pre_config_lock_readiness_v0_codex_20260516/p3_4av_p5_pre_config_lock_readiness_manifest.json",
+    "p3_4av_route_decisions": "data/energy_tsfm_tuning/p3_4av_p5_pre_config_lock_readiness_v0_codex_20260516/p3_4av_model_route_decision_table.csv",
+    "p3_4av_rules": "data/energy_tsfm_tuning/p3_4av_p5_pre_config_lock_readiness_v0_codex_20260516/p3_4av_final_config_lock_rules.csv",
+    "p3_4ay_manifest": "data/energy_tsfm_tuning/p3_4ay_h2_validation_selector_prototype_v0_codex_20260516/p3_4ay_h2_validation_selector_prototype_manifest.json",
+    "p3_4az_manifest": "data/energy_tsfm_tuning/p3_4az_h3_decision_weighted_validation_prototype_v0_codex_20260516/p3_4az_h3_decision_weighted_validation_prototype_manifest.json"
+  },
+  "input_status": {
+    "p3_4av": "ok",
+    "p3_4ay": "ok",
+    "p3_4az": "ok"
+  },
+  "manifest": "data/energy_tsfm_tuning/p3_4ba_p5_pre_final_lock_manifest_v0_codex_20260516/p3_4ba_p5_pre_final_lock_manifest.json",
+  "plan_id": "p3_4ba_p5_pre_final_lock_manifest_v0_codex_20260516",
+  "readiness_gate_table_csv": "data/energy_tsfm_tuning/p3_4ba_p5_pre_final_lock_manifest_v0_codex_20260516/p3_4ba_p5_readiness_gate_table.csv",
+  "remaining_risks": [
+    "Strong H1 method claim is not locked; H1 fallback/prototype remains diagnostic appendix evidence unless a later true-adapter route passes audit.",
+    "TiRex/Sundial are not part of initial P5 main test lock until aligned validation evidence is produced."
+  ],
+  "route_lock_rows": 8,
+  "route_lock_table_csv": "data/energy_tsfm_tuning/p3_4ba_p5_pre_final_lock_manifest_v0_codex_20260516/p3_4ba_route_lock_table.csv",
+  "status": "ok",
+  "status_doc": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4ba_p5_pre_final_lock_manifest_status.md",
+  "strong_h1_method_claim_locked": false,
+  "test_untouched": true
+}

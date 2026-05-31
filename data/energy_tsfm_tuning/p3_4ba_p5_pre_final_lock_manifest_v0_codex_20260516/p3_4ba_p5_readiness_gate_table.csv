@@ -1,0 +1,11 @@
+gate_id,passed,hard_gate,note
+no_test_before_lock,True,True,No P3-4av/P3-4ay/P3-4az/P3-4ba artifact allows test access before lock.
+same_test_windows_required,True,True,P5 main-result test table must use identical windows per domain/horizon/task.
+full_sample_main_stage,True,True,Formal P5 training/fine-tuning/refit uses full P3 target-pure samples.
+gpu_for_dl_tsfm,True,True,All DL/TSFM P5 work must run on CUDA; LightGBM is the CPU exception.
+lightgbm_36_threads,True,True,Formal LightGBM uses n_jobs=36 on ServerA unless a later audited resource rule changes it.
+h1_fallback_boundary,True,True,Chronos residual and TimesFM static-energy fallbacks are not final H1 method evidence.
+h2_policy_locked,True,True,Primary deployable H2 policy is cell_validation_winner; oracle is upper bound only.
+h3_metric_locked,True,True,Decision-weighted and critical-window thresholds use train metadata only.
+tirex_sundial_boundary,True,False,TiRex/Sundial are conditional/deferred extensions until aligned validation evidence exists.
+strong_h1_claim_remaining_risk,True,False,"Initial P5 can proceed for formal main results, but a strong H1 method claim remains unresolved."

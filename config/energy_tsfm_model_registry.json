@@ -1,0 +1,1135 @@
+{
+  "registry_version": "2026-05-14-p2-0.2",
+  "paper_target": "Applied Energy VSI: Large models for Next-Generation Energy Systems",
+  "scope": "Locked model portfolio for the new multi-energy TSFM paper.",
+  "rules": [
+    "This registry controls P2/P3 experiment eligibility and table placement.",
+    "A model can be moved to appendix or excluded only with a documented feasibility, license, horizon, runtime or audit reason.",
+    "The strong-baseline set is intentionally limited to LightGBM, TFT, N-BEATSx, iTransformer and TimeXer Future-Known to avoid a model zoo while retaining one explicit exogenous-variable Transformer.",
+    "The 2025 top-conference TSFM pool supports the large-model audit narrative; it is not the only pool because several models have limited covariate/adaptation support.",
+    "The covariate/adaptation pool supports H1 energy-conditioned adaptation and must be evaluated under the same P1c task contract.",
+    "All DL/Transformer/TSFM training, validation, testing, fine-tuning, inference, smoke checks, shared-dev runs and backtesting must run on GPU/CUDA; CPU-only DL/TSFM artifacts are ineligible for registry status, P2/P3 summaries and manuscript tables.",
+    "LightGBM is the CPU exception: formal LightGBM training/tuning may use about 90% CPU threads; ServerA's 40 logical CPUs imply --n-jobs 36 unless superseded by a documented resource policy.",
+    "DL/Transformer/TSFM formal runs should be configured for GPU/CUDA with high utilization, bounded by memory safety, reproducibility and audit requirements.",
+    "P2/P3 DL/TSFM artifacts must pass the P2-2ad GPU artifact audit or an equivalent later GPU audit before they can be cited in registry summaries or manuscript tables.",
+    "P2/P3 registry-facing artifacts must pass the P2-2ae memory/Markdown consistency audit or an equivalent later consistency audit before P3 handoff.",
+    "Cross-model metric comparisons must pass a test-window alignment audit: identical window_id sets, timestamp metadata, and y_true values for the same dataset/task/domain/horizon/split."
+  ],
+  "table_layout": {
+    "main_performance": [
+      "lightgbm",
+      "tft",
+      "nbeatsx",
+      "itransformer",
+      "timexer_future_known",
+      "chronos2",
+      "sundial",
+      "timesfm2p5",
+      "energy_conditioned_adapter"
+    ],
+    "tsfm_2025_audit": [
+      "sundial",
+      "tirex",
+      "time_moe",
+      "moirai_moe",
+      "timer_xl"
+    ],
+    "covariate_adaptation_ablation": [
+      "chronos2_zero_shot",
+      "timesfm2p5_xreg",
+      "timesfm2p5_lora",
+      "ttm_fewshot",
+      "energy_conditioned_adapter"
+    ]
+  },
+  "config_variants": {
+    "chronos2_zero_shot": {
+      "base_model_id": "chronos2",
+      "variant_type": "zero_shot",
+      "table_roles": [
+        "covariate_adaptation_ablation"
+      ],
+      "notes": "Chronos-2 without task-specific adaptation, evaluated under the same P1c windows."
+    },
+    "chronos2_lora_finetune": {
+      "base_model_id": "chronos2",
+      "variant_type": "lora_finetune",
+      "table_roles": [
+        "candidate_adaptation_ablation"
+      ],
+      "checkpoint": "amazon/chronos-2",
+      "parameters_m": 120,
+      "preflight_status": "p2_2y_selected_route_test_once_passed",
+      "notes": "Chronos-2 full-power checkpoint with LoRA fine-tuning; P2-2t preflight passed on aluminum_load/4h, P2-2u shared-development scaling passed across all 5 domains x 2 horizons, P2-2v/P2-2w validation-only budget checks selected 128/32 windows, 50 steps and learning rate 5e-5, P2-2x locked a validation WAPE selection rule choosing LoRA for 7 cells and zero-shot for 3 cells, and P2-2y completed selected-route test-once on the shared P2 development subset. The pure all-LoRA route remains separate from the validation-selected route.",
+      "gpu_audit": "p2_2ad_pre_p3_gpu_artifact_audit"
+    },
+    "timesfm2p0_500m_zero_shot": {
+      "base_model_id": "timesfm2p5",
+      "variant_type": "full_power_zero_shot",
+      "table_roles": [
+        "main_performance"
+      ],
+      "checkpoint": "google/timesfm-2.0-500m-pytorch",
+      "artifact_model_id": "timesfm2p0_500m",
+      "parameters_m": 500,
+      "notes": "TimesFM-family full-power target-only zero-shot route, P1c-smoke-passed in P2-2s and shared-dev-passed in P2-2z via transformers.TimesFmModelForPrediction. Prediction/metric artifacts must use artifact_model_id timesfm2p0_500m. Keep separate from TimesFM 2.5 200M XReg/adaptation variants.",
+      "shared_dev_status": "p2_2z_shared_dev_passed",
+      "shared_dev_manifest": "results/energy_tsfm_formal/timesfm2p0_500m_shared_dev/timesfm2p0_500m_shared_dev_seed20260514_eval64/manifest.json",
+      "shared_dev_metrics_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2z_timesfm2p0_500m_shared_dev_metrics.csv",
+      "gpu_audit": "p2_2ad_pre_p3_gpu_artifact_audit",
+      "base_model_id_note": "base_model_id points to the shared TimesFM-family registry entry; artifact_model_id timesfm2p0_500m disambiguates this 500M checkpoint from TimesFM 2.5 200M XReg/adaptation artifacts."
+    },
+    "timesfm2p5_xreg": {
+      "base_model_id": "timesfm2p5",
+      "variant_type": "xreg",
+      "table_roles": [
+        "covariate_adaptation_ablation"
+      ],
+      "notes": "TimesFM 2.5 200M with XReg covariate adaptation using known-future calendar features; P1c-smoke-passed in P2-2q and GPU-certified shared-dev-passed in P2-2aa/P2-2ad. Smaller/newer adaptation variant, not the full-power headline route.",
+      "checkpoint": "google/timesfm-2.5-200m-pytorch",
+      "parameters_m": 200,
+      "shared_dev_status": "p2_2aa_gpu_certified_shared_dev_passed",
+      "shared_dev_manifest": "results/energy_tsfm_formal/timesfm2p5_xreg_shared_dev/timesfm2p5_xreg_shared_dev_seed20260514_eval64_gpu_audit/manifest.json",
+      "shared_dev_metrics_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2aa_timesfm2p5_xreg_shared_dev_metrics.csv",
+      "superseded_shared_dev_manifest": "results/energy_tsfm_formal/timesfm2p5_xreg_shared_dev/timesfm2p5_xreg_shared_dev_seed20260514_eval64/manifest.json",
+      "gpu_audit": "p2_2ad_pre_p3_gpu_artifact_audit"
+    },
+    "timesfm2p5_lora": {
+      "base_model_id": "timesfm2p5",
+      "variant_type": "lora",
+      "table_roles": [
+        "covariate_adaptation_ablation"
+      ],
+      "notes": "TimesFM 2.5 200M parameter-efficient adaptation candidate; must be separately audited before formal reporting and must not be conflated with the 2.0 500M full-power zero-shot route.",
+      "checkpoint": "google/timesfm-2.5-200m-pytorch",
+      "parameters_m": 200
+    },
+    "ttm_fewshot": {
+      "base_model_id": "ttm",
+      "variant_type": "fewshot",
+      "table_roles": [
+        "covariate_adaptation_ablation"
+      ],
+      "notes": "TTM few-shot adaptation baseline."
+    },
+    "chronos2_validation_selected_lora_or_zero_shot": {
+      "base_model_id": "chronos2",
+      "variant_type": "validation_selected_lora_or_zero_shot",
+      "table_roles": [
+        "candidate_adaptation_ablation",
+        "p2_development_matrix"
+      ],
+      "checkpoint": "amazon/chronos-2",
+      "parameters_m": 120,
+      "selected_config_id": "chronos2_validation_selected_lora_or_zero_shot_v1",
+      "selection_rule": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2x_chronos2_lora_selection_rule.json",
+      "test_once_status": "p2_2y_selected_route_test_once_passed",
+      "test_once_manifest": "results/energy_tsfm_formal/chronos2_lora_selected/chronos2_selected_test_once_p2_2y_seed20260514/manifest.json",
+      "test_once_metrics_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2y_chronos2_selected_test_once_metrics.csv",
+      "notes": "Validation-selected Chronos-2 route: LoRA where P2-2w validation WAPE improves over zero-shot, otherwise zero-shot. P2-2y applied the locked rule to test once on the shared P2 development subset; non-selected routes were not predicted on test.",
+      "gpu_audit": "p2_2ad_pre_p3_gpu_artifact_audit"
+    }
+  },
+  "models": [
+    {
+      "model_id": "seasonal_naive",
+      "display_name": "Seasonal Naive",
+      "family": "sanity_baseline",
+      "table_roles": [
+        "sanity_reference"
+      ],
+      "input_track": [
+        "target_only"
+      ],
+      "supports_covariates": false,
+      "supports_multivariate": false,
+      "supports_probabilistic": false,
+      "supports_finetune": false,
+      "license": "project implementation",
+      "venue_or_status": "sanity reference baseline",
+      "code_or_weights": "local project adapter",
+      "horizon_limit_steps": null,
+      "primary_environment": "ahpat",
+      "status": "planned_smoke",
+      "notes": "Reference-line baseline only; not a headline strong baseline and not part of the main performance table."
+    },
+    {
+      "model_id": "lightgbm",
+      "display_name": "LightGBM",
+      "family": "strong_baseline",
+      "table_roles": [
+        "main_performance"
+      ],
+      "input_track": [
+        "target_only",
+        "covariate_aware"
+      ],
+      "supports_covariates": true,
+      "supports_multivariate": false,
+      "supports_probabilistic": false,
+      "supports_finetune": true,
+      "license": "Microsoft LightGBM package license; verify installed package metadata before release",
+      "venue_or_status": "classical strong baseline",
+      "code_or_weights": "local Python package",
+      "horizon_limit_steps": null,
+      "primary_environment": "ahpat",
+      "status": "planned_smoke",
+      "notes": "Main tabular feature-engineering baseline. Features must be registered and segment-safe."
+    },
+    {
+      "model_id": "tft",
+      "display_name": "Temporal Fusion Transformer",
+      "family": "strong_baseline",
+      "table_roles": [
+        "main_performance"
+      ],
+      "input_track": [
+        "covariate_aware"
+      ],
+      "supports_covariates": true,
+      "supports_multivariate": true,
+      "supports_probabilistic": true,
+      "supports_finetune": true,
+      "license": "implementation-dependent; verify selected library before release",
+      "venue_or_status": "energy-forecasting accepted deep baseline",
+      "code_or_weights": "local Python package or project adapter",
+      "horizon_limit_steps": null,
+      "primary_environment": "ahpat",
+      "status": "planned_smoke",
+      "notes": "Covariate-aware interpretable deep baseline."
+    },
+    {
+      "model_id": "nbeatsx",
+      "display_name": "N-BEATSx",
+      "family": "strong_baseline",
+      "table_roles": [
+        "main_performance"
+      ],
+      "input_track": [
+        "target_only",
+        "covariate_aware"
+      ],
+      "supports_covariates": true,
+      "supports_multivariate": false,
+      "supports_probabilistic": false,
+      "supports_finetune": true,
+      "license": "implementation-dependent; verify selected library before release",
+      "venue_or_status": "strong deep forecasting baseline",
+      "code_or_weights": "local Python package or project adapter",
+      "horizon_limit_steps": null,
+      "primary_environment": "ahpat",
+      "status": "planned_smoke",
+      "notes": "Use N-BEATSx rather than plain N-BEATS when exogenous variables are available."
+    },
+    {
+      "model_id": "itransformer",
+      "display_name": "iTransformer",
+      "family": "strong_baseline",
+      "table_roles": [
+        "main_performance"
+      ],
+      "input_track": [
+        "target_only",
+        "covariate_aware"
+      ],
+      "supports_covariates": true,
+      "supports_multivariate": true,
+      "supports_probabilistic": false,
+      "supports_finetune": true,
+      "license": "implementation-dependent; verify selected package/repo before release",
+      "venue_or_status": "modern supervised Transformer baseline",
+      "code_or_weights": "local Python package or project adapter",
+      "horizon_limit_steps": null,
+      "primary_environment": "ahpat",
+      "status": "fixed_base_passed",
+      "notes": "Modern multivariate Transformer supervised baseline. supports_covariates=true means the project-local supervised adapter/runner can consume audited historical and known-future covariates; it is not a claim that the NeuralForecast class alone provides every future-known TSFM-style covariate interface."
+    },
+    {
+      "model_id": "timexer_future_known",
+      "display_name": "TimeXer Future-Known",
+      "family": "strong_baseline",
+      "table_roles": [
+        "main_performance"
+      ],
+      "input_track": [
+        "covariate_aware",
+        "future_known_exog"
+      ],
+      "supports_covariates": true,
+      "supports_multivariate": true,
+      "supports_probabilistic": false,
+      "supports_finetune": true,
+      "license": "official-derived project adapter; verify THUML source license before release",
+      "venue_or_status": "TimeXer NeurIPS 2024; project future-known exog adapter",
+      "code_or_weights": "local adapter derived from THUML TimeXer/Time-Series-Library design",
+      "verification_sources": [
+        "https://proceedings.neurips.cc/paper_files/paper/2024/hash/0113ef4642264adc2e6924a3cbbdf532-Abstract-Conference.html",
+        "https://github.com/thuml/TimeXer",
+        "https://github.com/thuml/Time-Series-Library"
+      ],
+      "horizon_limit_steps": null,
+      "primary_environment": "ahpat",
+      "status": "formal_dryrun_passed",
+      "notes": "Main-table exogenous-variable Transformer baseline with explicit future-known calendar path. It does not replace iTransformer. Current fixed-base dry-run uses future calendar only; future weather forecast covariates require documented origin-time forecast construction before manuscript use."
+    },
+    {
+      "model_id": "sundial",
+      "display_name": "Sundial",
+      "family": "tsfm_zero_shot",
+      "table_roles": [
+        "main_performance",
+        "tsfm_2025_audit"
+      ],
+      "input_track": [
+        "target_only"
+      ],
+      "supports_covariates": false,
+      "supports_multivariate": false,
+      "supports_probabilistic": true,
+      "supports_finetune": false,
+      "license": "Apache-2.0",
+      "venue_or_status": "ICML 2025 Oral",
+      "code_or_weights": "thuml/Sundial; thuml/sundial-base-128m",
+      "horizon_limit_steps": null,
+      "primary_environment": "isolated_sundial_transformers",
+      "status": "full_public_base_unprobed_remote_code_required",
+      "notes": "Strong venue signal and generative probabilistic TSFM. Public interface is mainly target-only. Sundial paper lists a larger 444M model, but current public HF search found base-128M only; use public base only if Large remains unavailable after explicit audit.",
+      "full_power_audit": {
+        "last_audited": "2026-05-14",
+        "audit_artifacts": {
+          "json": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit.json",
+          "csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit.csv",
+          "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit_status.md"
+        },
+        "full_power_status": "paper_largest_not_public_public_base_unprobed",
+        "selected_full_power_checkpoint": "thuml/sundial-base-128m",
+        "selected_total_parameters_m": 128,
+        "selected_active_parameters_m": null,
+        "current_registry_checkpoint": "thuml/sundial-base-128m",
+        "current_smoke_checkpoint": null,
+        "current_is_full_power": true,
+        "largest_known_public_checkpoint": "thuml/sundial-base-128m",
+        "largest_known_public_parameters_m": 128,
+        "largest_known_public_weight_gb": 0.513,
+        "adaptation_routes": [
+          "zero_shot"
+        ],
+        "formal_next_action": "Audit THUML/Sundial source and remote-code path; search explicitly for a public 444M Large checkpoint before formal exclusion/fallback."
+      }
+    },
+    {
+      "model_id": "tirex",
+      "display_name": "TiRex",
+      "family": "tsfm_zero_shot",
+      "table_roles": [
+        "tsfm_2025_audit"
+      ],
+      "input_track": [
+        "target_only"
+      ],
+      "supports_covariates": false,
+      "supports_multivariate": false,
+      "supports_probabilistic": true,
+      "supports_finetune": false,
+      "license": "NXAI Community License; commercial-use caveat",
+      "venue_or_status": "xLSTM TSFM; venue/version must be re-verified before manuscript tables",
+      "code_or_weights": "NX-AI/TiRex",
+      "horizon_limit_steps": null,
+      "primary_environment": "ahpat_or_isolated_if_needed",
+      "status": "full_power_package_import_passed_weights_not_cached_license_review_required",
+      "notes": "xLSTM TSFM; adds architectural diversity. License caveat and exact venue/version claim must be verified before any manuscript table or text uses it.",
+      "full_power_audit": {
+        "last_audited": "2026-05-14",
+        "audit_artifacts": {
+          "json": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit.json",
+          "csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit.csv",
+          "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit_status.md"
+        },
+        "full_power_status": "full_power_package_import_passed_weights_not_cached",
+        "selected_full_power_checkpoint": "NX-AI/TiRex",
+        "selected_total_parameters_m": 35,
+        "selected_active_parameters_m": null,
+        "current_registry_checkpoint": "NX-AI/TiRex",
+        "current_smoke_checkpoint": null,
+        "current_is_full_power": true,
+        "largest_known_public_checkpoint": "NX-AI/TiRex",
+        "largest_known_public_parameters_m": 35,
+        "largest_known_public_weight_gb": 0.283,
+        "adaptation_routes": [
+          "zero_shot"
+        ],
+        "formal_next_action": "Review NXAI license, then cache NX-AI/TiRex and run P1c smoke if license is acceptable."
+      }
+    },
+    {
+      "model_id": "time_moe",
+      "display_name": "Time-MoE",
+      "family": "tsfm_zero_shot",
+      "table_roles": [
+        "tsfm_2025_audit"
+      ],
+      "input_track": [
+        "target_only"
+      ],
+      "supports_covariates": false,
+      "supports_multivariate": false,
+      "supports_probabilistic": false,
+      "supports_finetune": true,
+      "license": "Apache-2.0",
+      "venue_or_status": "ICLR 2025 Spotlight",
+      "code_or_weights": "Time-MoE/Time-MoE; full-power public candidate Maple728/TimeMoE-200M; smaller previous pointer Maple728/TimeMoE-50M",
+      "horizon_limit_steps": null,
+      "primary_environment": "preflight_required",
+      "status": "full_power_200m_identified_package_missing_remote_code_required",
+      "notes": "Sparse-MoE TSFM. Fine-tuning exists, but not energy-covariate or LoRA adaptation by default. Do not use 50M as formal Time-MoE unless 200M fails a concrete audit.",
+      "full_power_audit": {
+        "last_audited": "2026-05-14",
+        "audit_artifacts": {
+          "json": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit.json",
+          "csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit.csv",
+          "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit_status.md"
+        },
+        "full_power_status": "registry_pointer_not_full_power_package_missing",
+        "selected_full_power_checkpoint": "Maple728/TimeMoE-200M",
+        "selected_total_parameters_m": 500,
+        "selected_active_parameters_m": 200,
+        "current_registry_checkpoint": "Maple728/TimeMoE-50M",
+        "current_smoke_checkpoint": null,
+        "current_is_full_power": false,
+        "largest_known_public_checkpoint": "Maple728/TimeMoE-200M",
+        "largest_known_public_parameters_m": 500,
+        "largest_known_public_weight_gb": null,
+        "adaptation_routes": [
+          "zero_shot",
+          "fine_tuning_pipeline_to_audit"
+        ],
+        "formal_next_action": "Install/audit Time-MoE package stack with trust_remote_code review, then cache/probe Maple728/TimeMoE-200M."
+      }
+    },
+    {
+      "model_id": "moirai_moe",
+      "display_name": "Moirai-MoE",
+      "family": "tsfm_zero_shot",
+      "table_roles": [
+        "tsfm_2025_audit"
+      ],
+      "input_track": [
+        "target_only",
+        "covariate_aware"
+      ],
+      "supports_covariates": true,
+      "supports_multivariate": true,
+      "supports_probabilistic": true,
+      "supports_finetune": false,
+      "license": "CC-BY-NC-4.0 for known public weights; verify before release",
+      "venue_or_status": "ICML 2025",
+      "code_or_weights": "SalesforceAIResearch/uni2ts; full-power public candidate Salesforce/moirai-moe-1.0-R-base; smaller previous pointer Salesforce/moirai-moe-1.0-R-small",
+      "verification_sources": [
+        "https://proceedings.mlr.press/v267/liu25an.html",
+        "https://github.com/SalesforceAIResearch/uni2ts"
+      ],
+      "horizon_limit_steps": null,
+      "primary_environment": "preflight_required",
+      "status": "full_power_base_identified_uni2ts_missing_noncommercial",
+      "notes": "Any-variate sparse-MoE TSFM. Non-commercial weight license may limit release positioning. Do not use small Moirai-MoE as formal full-power comparison unless base fails a concrete audit; non-commercial license caveat remains.",
+      "full_power_audit": {
+        "last_audited": "2026-05-14",
+        "audit_artifacts": {
+          "json": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit.json",
+          "csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit.csv",
+          "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit_status.md"
+        },
+        "full_power_status": "registry_pointer_not_full_power_package_missing_noncommercial",
+        "selected_full_power_checkpoint": "Salesforce/moirai-moe-1.0-R-base",
+        "selected_total_parameters_m": 935,
+        "selected_active_parameters_m": 86,
+        "current_registry_checkpoint": "Salesforce/moirai-moe-1.0-R-small",
+        "current_smoke_checkpoint": null,
+        "current_is_full_power": false,
+        "largest_known_public_checkpoint": "Salesforce/moirai-moe-1.0-R-base",
+        "largest_known_public_parameters_m": 935,
+        "largest_known_public_weight_gb": null,
+        "adaptation_routes": [
+          "zero_shot"
+        ],
+        "formal_next_action": "Install/audit uni2ts/gluonts stack and license implications, then cache/probe moirai-moe-1.0-R-base if acceptable."
+      }
+    },
+    {
+      "model_id": "timer_xl",
+      "display_name": "Timer-XL",
+      "family": "tsfm_zero_shot",
+      "table_roles": [
+        "tsfm_2025_audit"
+      ],
+      "input_track": [
+        "target_only"
+      ],
+      "supports_covariates": false,
+      "supports_multivariate": true,
+      "supports_probabilistic": false,
+      "supports_finetune": false,
+      "license": "Apache-2.0 in public repository; verify selected checkpoint before release",
+      "venue_or_status": "ICLR 2025",
+      "code_or_weights": "thuml/Timer-XL exact HF pointer unresolved; related larger Timer-family checkpoint thuml/Timer-S1 found; smaller related thuml/timer-base-84m",
+      "verification_sources": [
+        "https://github.com/thuml/Timer-XL",
+        "https://proceedings.iclr.cc/paper_files/paper/2025/hash/d09820e292f915d77fa717d228c425ee-Abstract-Conference.html"
+      ],
+      "horizon_limit_steps": null,
+      "primary_environment": "preflight_required",
+      "status": "exact_timer_xl_unresolved_timer_s1_found_scope_decision_required",
+      "notes": "Long-context TSFM; useful for 24h and long-context sensitivity. Timer-S1 is a related larger Timer-family checkpoint, not an exact Timer-XL substitute; table scope must be decided before quantitative use.",
+      "full_power_audit": {
+        "last_audited": "2026-05-14",
+        "audit_artifacts": {
+          "json": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit.json",
+          "csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit.csv",
+          "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit_status.md"
+        },
+        "full_power_status": "exact_timer_xl_pointer_unresolved_related_timer_s1_found",
+        "selected_full_power_checkpoint": null,
+        "selected_total_parameters_m": null,
+        "selected_active_parameters_m": null,
+        "current_registry_checkpoint": null,
+        "current_smoke_checkpoint": null,
+        "current_is_full_power": null,
+        "largest_known_public_checkpoint": "thuml/Timer-S1",
+        "largest_known_public_parameters_m": null,
+        "largest_known_public_weight_gb": 16.608,
+        "adaptation_routes": [
+          "zero_shot"
+        ],
+        "formal_next_action": "Decide whether to keep exact Timer-XL unresolved, substitute/rename to Timer-S1 after scope review, or exclude Timer from quantitative tables."
+      }
+    },
+    {
+      "model_id": "chronos2",
+      "display_name": "Chronos-2",
+      "family": "tsfm_covariate",
+      "table_roles": [
+        "main_performance",
+        "covariate_adaptation_ablation"
+      ],
+      "input_track": [
+        "target_only",
+        "covariate_aware"
+      ],
+      "supports_covariates": true,
+      "supports_multivariate": true,
+      "supports_probabilistic": true,
+      "supports_finetune": true,
+      "license": "Apache-2.0",
+      "venue_or_status": "public release / arXiv, no top-conference venue confirmed",
+      "code_or_weights": "amazon/chronos-2; amazon-science/chronos-forecasting",
+      "horizon_limit_steps": 1024,
+      "primary_environment": "ahpat",
+      "status": "full_power_covariate_lora_selected_test_once_passed",
+      "notes": "Most practical covariate-aware probabilistic TSFM backbone. Full-power covariate-aware P1c smoke passed, LoRA fine-tuning preflight passed on aluminum_load/4h, P2-2u shared-development scaling passed across all 5 domains x 2 horizons, P2-2v/P2-2w validation-only budget checks selected 128/32 windows, 50 steps and learning rate 5e-5, P2-2x locked a validation WAPE rule selecting LoRA for 7 cells and zero-shot for 3 cells, and P2-2y completed the selected-route test-once evaluation on the shared P2 development subset. This is P2 development evidence, not the final manuscript-scale P3 result.",
+      "full_power_audit": {
+        "last_audited": "2026-05-14",
+        "audit_artifacts": {
+          "json": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit.json",
+          "csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit.csv",
+          "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit_status.md",
+          "lora_preflight_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2t_chronos2_lora_preflight_status.md",
+          "lora_shared_dev_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2u_chronos2_lora_shared_dev_status.md",
+          "lora_validation_budget_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2v_chronos2_lora_validation_budget_status.md",
+          "lora_validation_budget_summary_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2v_chronos2_lora_validation_budget_summary.csv",
+          "lora_validation_robust_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2w_chronos2_lora_validation_robust_status.md",
+          "lora_validation_robust_summary_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2w_chronos2_lora_validation_robust_summary.csv",
+          "lora_validation_robust_lr_summary_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2w_chronos2_lora_validation_robust_lr_summary.csv",
+          "lora_selection_rule_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2x_chronos2_lora_selection_rule_status.md",
+          "lora_selection_rule_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2x_chronos2_lora_selection_rule.csv",
+          "lora_selection_rule_json": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2x_chronos2_lora_selection_rule.json",
+          "lora_selected_test_once_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2y_chronos2_selected_test_once_status.md",
+          "lora_selected_test_once_metrics_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2y_chronos2_selected_test_once_metrics.csv",
+          "lora_selected_test_once_manifest": "results/energy_tsfm_formal/chronos2_lora_selected/chronos2_selected_test_once_p2_2y_seed20260514/manifest.json"
+        },
+        "full_power_status": "full_power_covariate_smoke_lora_selected_test_once_passed",
+        "selected_full_power_checkpoint": "amazon/chronos-2",
+        "selected_total_parameters_m": 120,
+        "selected_active_parameters_m": null,
+        "current_registry_checkpoint": "amazon/chronos-2",
+        "current_smoke_checkpoint": "amazon/chronos-2",
+        "current_is_full_power": true,
+        "largest_known_public_checkpoint": "amazon/chronos-2",
+        "largest_known_public_parameters_m": 120,
+        "largest_known_public_weight_gb": 0.478,
+        "adaptation_routes": [
+          "zero_shot",
+          "native_covariate_icl",
+          "future_known_covariates",
+          "lora_fine_tuning_preflight_passed",
+          "lora_fine_tuning_shared_dev_scaling_passed",
+          "lora_validation_budget_candidate_selected",
+          "lora_validation_robust_candidate_selected",
+          "lora_validation_selection_rule_locked",
+          "lora_selected_route_test_once_passed"
+        ],
+        "formal_next_action": "Use the Chronos-2 validation-selected route as P2 development-matrix evidence; do not run additional Chronos-2 test variants until a later P3/final protocol is locked. Continue P2 with TimesFM full-power shared-dev and adaptation-route audits, then build the P2 master summary before P3."
+      }
+    },
+    {
+      "model_id": "timesfm2p5",
+      "display_name": "TimesFM family",
+      "family": "tsfm_covariate",
+      "table_roles": [
+        "main_performance",
+        "covariate_adaptation_ablation"
+      ],
+      "input_track": [
+        "target_only",
+        "covariate_aware"
+      ],
+      "supports_covariates": true,
+      "supports_multivariate": false,
+      "supports_probabilistic": true,
+      "supports_finetune": true,
+      "license": "Apache-2.0",
+      "venue_or_status": "TimesFM v1 ICML 2024; 2.5 public release; 2.0 500M full-power checkpoint",
+      "code_or_weights": "google-research/timesfm; full-power checkpoint google/timesfm-2.0-500m-pytorch; smaller XReg smoke checkpoint google/timesfm-2.5-200m-pytorch",
+      "horizon_limit_steps": 1024,
+      "primary_environment": "ahpat",
+      "status": "full_power_500m_shared_dev_passed",
+      "notes": "Full-power TimesFM-family checkpoint google/timesfm-2.0-500m-pytorch is cached, SHA256-verified, P1c-smoke-passed via transformers TimesFmModelForPrediction target-only zero-shot, and P2-2z shared-dev-passed on the fixed P2 development subset. The google/timesfm-2.5-200m-pytorch XReg route is also P2-2aa GPU-certified shared-dev-passed with known-future calendar covariates; it is a smaller/newer adaptation-route result, not the full-power headline route. LoRA/fine-tuning routes for formal reporting require separate public-route audits.",
+      "full_power_audit": {
+        "last_audited": "2026-05-14",
+        "audit_artifacts": {
+          "json": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit.json",
+          "csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit.csv",
+          "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit_status.md",
+          "full_power_smoke_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2s_timesfm2p0_500m_p1c_smoke_status.md",
+          "full_power_shared_dev_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2z_timesfm2p0_500m_shared_dev_status.md",
+          "full_power_shared_dev_metrics_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2z_timesfm2p0_500m_shared_dev_metrics.csv",
+          "full_power_shared_dev_manifest": "results/energy_tsfm_formal/timesfm2p0_500m_shared_dev/timesfm2p0_500m_shared_dev_seed20260514_eval64/manifest.json",
+          "timesfm2p5_xreg_shared_dev_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2aa_timesfm2p5_xreg_shared_dev_status.md",
+          "timesfm2p5_xreg_shared_dev_metrics_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2aa_timesfm2p5_xreg_shared_dev_metrics.csv",
+          "timesfm2p5_xreg_shared_dev_manifest": "results/energy_tsfm_formal/timesfm2p5_xreg_shared_dev/timesfm2p5_xreg_shared_dev_seed20260514_eval64_gpu_audit/manifest.json",
+          "timesfm2p5_xreg_superseded_shared_dev_manifest": "results/energy_tsfm_formal/timesfm2p5_xreg_shared_dev/timesfm2p5_xreg_shared_dev_seed20260514_eval64/manifest.json",
+          "pre_p3_gpu_artifact_audit_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2ad_pre_p3_gpu_artifact_audit_status.md"
+        },
+        "full_power_status": "full_power_shared_dev_passed",
+        "selected_full_power_checkpoint": "google/timesfm-2.0-500m-pytorch",
+        "selected_total_parameters_m": 500,
+        "selected_active_parameters_m": null,
+        "current_registry_checkpoint": "google/timesfm-2.0-500m-pytorch",
+        "current_smoke_checkpoint": "google/timesfm-2.0-500m-pytorch",
+        "current_is_full_power": true,
+        "largest_known_public_checkpoint": "google/timesfm-2.0-500m-pytorch",
+        "largest_known_public_parameters_m": 500,
+        "largest_known_public_weight_gb": 1.995,
+        "adaptation_routes": [
+          "zero_shot_full_power_500m",
+          "xreg_smaller_2p5_200m_smoke",
+          "lora_or_fine_tuning_public_examples_to_audit",
+          "zero_shot_full_power_500m_shared_dev_passed",
+          "xreg_2p5_200m_shared_dev_passed",
+          "xreg_2p5_200m_gpu_certified_shared_dev_passed"
+        ],
+        "formal_next_action": "Keep TimesFM 2.0 500M as the full-power target-only zero-shot route and TimesFM 2.5 200M XReg as a separate smaller-checkpoint covariate-adaptation route. Before P3 final reporting, decide whether a TimesFM 2.5 LoRA/fine-tuning route is license- and API-feasible."
+      }
+    },
+    {
+      "model_id": "ttm",
+      "display_name": "Tiny Time Mixers",
+      "family": "tsfm_covariate",
+      "table_roles": [
+        "covariate_adaptation_ablation"
+      ],
+      "input_track": [
+        "target_only",
+        "covariate_aware"
+      ],
+      "supports_covariates": true,
+      "supports_multivariate": true,
+      "supports_probabilistic": false,
+      "supports_finetune": true,
+      "license": "Apache-2.0",
+      "venue_or_status": "NeurIPS 2024",
+      "code_or_weights": "full-power-by-weight candidate ibm-granite/granite-timeseries-ttm-r1; newer registry pointer ibm-granite/granite-timeseries-ttm-r2 requires justification if used",
+      "horizon_limit_steps": null,
+      "primary_environment": "preflight_required",
+      "status": "full_power_r1_identified_package_missing_r2_registry_pointer_superseded",
+      "notes": "Lightweight few-shot/covariate-friendly TSFM baseline for adaptation efficiency. Strict full-power-by-weight points to R1; R2 may require a documented newer-version justification or checkpoint-version sensitivity.",
+      "full_power_audit": {
+        "last_audited": "2026-05-14",
+        "audit_artifacts": {
+          "json": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit.json",
+          "csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit.csv",
+          "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2r_full_power_checkpoint_audit_status.md"
+        },
+        "full_power_status": "registry_pointer_not_largest_by_weight_package_missing",
+        "selected_full_power_checkpoint": "ibm-granite/granite-timeseries-ttm-r1",
+        "selected_total_parameters_m": 5,
+        "selected_active_parameters_m": null,
+        "current_registry_checkpoint": "ibm-granite/granite-timeseries-ttm-r2",
+        "current_smoke_checkpoint": null,
+        "current_is_full_power": false,
+        "largest_known_public_checkpoint": "ibm-granite/granite-timeseries-ttm-r1",
+        "largest_known_public_parameters_m": 5,
+        "largest_known_public_weight_gb": 0.005,
+        "adaptation_routes": [
+          "zero_shot",
+          "few_shot_fine_tuning"
+        ],
+        "formal_next_action": "Install/audit TTM package stack and decide whether strict full-power uses R1 or whether R2 is justified as a newer variant; run few-shot adaptation if feasible."
+      }
+    },
+    {
+      "model_id": "energy_conditioned_adapter",
+      "display_name": "Energy-conditioned TSFM Adapter",
+      "family": "ours",
+      "table_roles": [
+        "main_performance",
+        "covariate_adaptation_ablation"
+      ],
+      "input_track": [
+        "covariate_aware"
+      ],
+      "supports_covariates": true,
+      "supports_multivariate": true,
+      "supports_probabilistic": true,
+      "supports_finetune": true,
+      "license": "project method",
+      "venue_or_status": "proposed method",
+      "code_or_weights": "to be implemented",
+      "horizon_limit_steps": null,
+      "primary_environment": "ahpat",
+      "status": "method_placeholder",
+      "notes": "Must be a real energy-conditioned adaptation mechanism, not ordinary fine-tuning."
+    }
+  ],
+  "formal_window_sets": {
+    "p3_target_pure_v0_codex_20260514": {
+      "status": "ok",
+      "policy": "target_pure_validation_test",
+      "builder": "scripts/build_p3_target_pure_window_manifest.py",
+      "manifest": "data/energy_tsfm_formal_windows/p3_target_pure_v0_codex_20260514/manifest.json",
+      "membership_parquet": "data/energy_tsfm_formal_windows/p3_target_pure_v0_codex_20260514/membership.parquet",
+      "subset_manifest_json": "data/energy_tsfm_formal_windows/p3_target_pure_v0_codex_20260514/subset_manifest.json",
+      "summary_csv": "data/energy_tsfm_formal_windows/p3_target_pure_v0_codex_20260514/summary.csv",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_0_target_pure_window_policy_status.md",
+      "p1c_endpoint_windows": 637427,
+      "p3_selected_windows": 635115,
+      "dropped_target_mixed_windows": 2312,
+      "selected_target_mixed_windows": 0,
+      "hard_failures": 0,
+      "use_rule": "P3 main-result runners must use this membership manifest or a documented successor with the same or stricter target-pure contract; endpoint-split results are sensitivity-only."
+    }
+  },
+  "tuned_capacity_scaffolds": {
+    "p3_tuned_capacity_v0_codex_20260514": {
+      "status": "ok",
+      "policy": "validation_only_optuna_adaptive_capacity",
+      "builder": "scripts/build_p3_tuned_capacity_scaffold.py",
+      "audit_script": "scripts/audit_p3_tuned_capacity_scaffold.py",
+      "search_space_manifest": "data/energy_tsfm_tuning/p3_tuned_capacity_v0_codex_20260514/search_space_manifest.json",
+      "command_templates_json": "data/energy_tsfm_tuning/p3_tuned_capacity_v0_codex_20260514/runner_command_templates.json",
+      "trial_budget_csv": "data/energy_tsfm_tuning/p3_tuned_capacity_v0_codex_20260514/trial_budgets.csv",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_2_tuned_capacity_scaffold_status.md",
+      "audit_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_2_tuned_capacity_scaffold_audit_status.md",
+      "audit_manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p3_2_tuned_capacity_scaffold_audit_manifest.json",
+      "audit_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_2_tuned_capacity_scaffold_audit.csv",
+      "checks_total": 107,
+      "checks_failed": 0,
+      "covered_models": [
+        "lightgbm",
+        "itransformer",
+        "nbeatsx",
+        "tft",
+        "timexer_future_known",
+        "chronos2_lora",
+        "timesfm2p0_500m_zero_shot",
+        "timesfm2p5_xreg"
+      ],
+      "use_rule": "P3 Optuna/adaptive-capacity trials must use this scaffold or a documented successor; tuning is validation-only and must not generate test predictions before final configuration selection."
+    }
+  },
+  "resource_aware_tuned_capacity_scaffolds": {
+    "p3_resource_aware_dl_v0_codex_20260515": {
+      "status": "ok",
+      "policy": "validation_only_gpu_resource_aware_dl_successor",
+      "parent_space_set_id": "p3_tuned_capacity_v0_codex_20260514",
+      "builder": "scripts/build_p3_resource_aware_dl_scaffold.py",
+      "audit_script": "scripts/audit_p3_resource_aware_dl_scaffold.py",
+      "search_space_manifest": "data/energy_tsfm_tuning/p3_resource_aware_dl_v0_codex_20260515/search_space_manifest.json",
+      "command_templates_json": "data/energy_tsfm_tuning/p3_resource_aware_dl_v0_codex_20260515/runner_command_templates.json",
+      "trial_budget_csv": "data/energy_tsfm_tuning/p3_resource_aware_dl_v0_codex_20260515/trial_budgets.csv",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4b_resource_aware_dl_scaffold_status.md",
+      "audit_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4b_resource_aware_dl_scaffold_audit_status.md",
+      "audit_manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4b_resource_aware_dl_scaffold_audit_manifest.json",
+      "audit_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4b_resource_aware_dl_scaffold_audit.csv",
+      "checks_total": 89,
+      "checks_failed": 0,
+      "covered_models": [
+        "itransformer",
+        "nbeatsx",
+        "tft",
+        "timexer_future_known"
+      ],
+      "source_diagnostic": "P3-4 iTransformer seed20260522 was CUDA-correct but used only 341387776 peak allocated bytes; this successor expands batch size, eval/inference batch size, loader workers and model width/depth before broad DL formal tuning.",
+      "use_rule": "Use this scaffold, or a documented stricter successor, for broad DL/Transformer formal validation-only tuning after P3-4b. It must not generate test predictions before final locked selection."
+    }
+  },
+  "tuned_capacity_smokes": {
+    "p3_3_optuna_smoke_lightgbm_aluminum_load_4h_trials2_seed20260516": {
+      "status": "ok",
+      "script": "scripts/run_p3_optuna_tuned_capacity_smoke.py",
+      "audit_script": "scripts/audit_p3_optuna_tuned_capacity_smoke.py",
+      "model_id": "lightgbm",
+      "domain": "aluminum_load",
+      "horizon": "4h",
+      "n_trials": 2,
+      "completed_trials": 2,
+      "failed_trials": 0,
+      "best_validation_wape": 0.0359498908301635,
+      "test_predictions_generated": false,
+      "summary_manifest": "results/energy_tsfm_tuning/p3_3_optuna_smoke/p3_3_optuna_smoke_lightgbm_aluminum_load_4h_trials2_seed20260516/summary_manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_status.md",
+      "audit_manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit_manifest.json",
+      "audit_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit_status.md",
+      "audit_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit.csv",
+      "audit_checks_total": 14,
+      "audit_checks_failed": 0,
+      "boundary": "Smoke only; capped P3 target-pure membership; validation-only; not a formal tuned-capacity result and not a final configuration selection."
+    },
+    "p3_3_optuna_smoke_itransformer_aluminum_load_4h_trials1_seed20260517": {
+      "status": "ok",
+      "script": "scripts/run_p3_optuna_tuned_capacity_smoke.py",
+      "audit_script": "scripts/audit_p3_optuna_tuned_capacity_smoke.py",
+      "model_id": "itransformer",
+      "domain": "aluminum_load",
+      "horizon": "4h",
+      "n_trials": 1,
+      "completed_trials": 1,
+      "failed_trials": 0,
+      "best_validation_wape": 0.001382202359285,
+      "test_predictions_generated": false,
+      "summary_manifest": "results/energy_tsfm_tuning/p3_3_optuna_smoke/p3_3_optuna_smoke_itransformer_aluminum_load_4h_trials1_seed20260517/summary_manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_status.md",
+      "ledger_json": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_ledger.json",
+      "ledger_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_ledger.csv",
+      "audit_manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit_manifest.json",
+      "audit_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit_status.md",
+      "audit_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit.csv",
+      "audit_ledger_json": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit_ledger.json",
+      "audit_ledger_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit_ledger.csv",
+      "audit_checks_total": 10,
+      "audit_checks_failed": 0,
+      "boundary": "Smoke only; capped P3 target-pure membership; validation-only; GPU/CUDA DL wrapper check; not a formal tuned-capacity result and not a final configuration selection."
+    },
+    "p3_3_optuna_smoke_itransformer_aluminum_load_4h_trials1_seed20260523": {
+      "status": "ok",
+      "script": "scripts/run_p3_optuna_tuned_capacity_smoke.py",
+      "model_id": "itransformer",
+      "domain": "aluminum_load",
+      "horizon": "4h",
+      "n_trials": 1,
+      "completed_trials": 1,
+      "failed_trials": 0,
+      "best_validation_wape": 0.0007110612925481,
+      "test_predictions_generated": false,
+      "scaffold_manifest": "data/energy_tsfm_tuning/p3_resource_aware_dl_v0_codex_20260515/search_space_manifest.json",
+      "summary_manifest": "results/energy_tsfm_tuning/p3_4b_resource_aware_smoke/p3_3_optuna_smoke_itransformer_aluminum_load_4h_trials1_seed20260523/summary_manifest.json",
+      "run_manifest": "results/energy_tsfm_tuning/p3_4b_resource_aware_smoke/p3_3_optuna_smoke_itransformer_aluminum_load_4h_trials1_seed20260523/runner_outputs/itransformer/aluminum_load/4h/itransformer_p3_resource_aware_trial_000_p3_3_optuna_smoke_itransformer_aluminum_load_4h_trials1_seed20260523/seed20260523/manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_status.md",
+      "ledger_json": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_ledger.json",
+      "ledger_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_ledger.csv",
+      "cuda_device_name": "NVIDIA RTX PRO 6000 Blackwell Workstation Edition",
+      "cuda_max_memory_allocated_bytes": 1483435520,
+      "p3_4_reference_cuda_max_memory_allocated_bytes": 341387776,
+      "sampled_resource_params": {
+        "batch_size": 256,
+        "d_ff": 2048,
+        "d_model": 1024,
+        "dropout": 0.19085123235057355,
+        "e_layers": 6,
+        "epochs": 30,
+        "eval_batch_size": 1024,
+        "gradient_clip": 1.8878455776484229,
+        "learning_rate": 0.000241336387965568,
+        "lr_patience": 2,
+        "n_heads": 8,
+        "num_workers": 12,
+        "patience": 6,
+        "weight_decay": 4.634823522386239e-06
+      },
+      "resource_interpretation": "P3-4b CUDA entry path is runnable and about 4.35x heavier than P3-4 seed20260522 by peak allocated memory, but still far below ServerA GPU capacity; use as a diagnostic green light, not a final capacity result.",
+      "boundary": "Smoke only; capped P3 target-pure membership; validation-only; no test predictions; resource-aware DL entry-path diagnostic, not formal tuned-capacity result and not a final configuration selection."
+    },
+    "p3_3_optuna_smoke_timesfm2p5_xreg_aluminum_load_4h_trials1_seed20260519": {
+      "status": "ok",
+      "script": "scripts/run_p3_optuna_tuned_capacity_smoke.py",
+      "audit_script": "scripts/audit_p3_optuna_tuned_capacity_smoke.py",
+      "model_id": "timesfm2p5_xreg",
+      "domain": "aluminum_load",
+      "horizon": "4h",
+      "n_trials": 1,
+      "completed_trials": 1,
+      "failed_trials": 0,
+      "best_validation_wape": 0.000835015818214,
+      "test_predictions_generated": false,
+      "summary_manifest": "results/energy_tsfm_tuning/p3_3_optuna_smoke/p3_3_optuna_smoke_timesfm2p5_xreg_aluminum_load_4h_trials1_seed20260519/summary_manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_status.md",
+      "ledger_json": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_ledger.json",
+      "ledger_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_ledger.csv",
+      "audit_manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit_manifest.json",
+      "audit_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit_status.md",
+      "audit_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit.csv",
+      "audit_ledger_json": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit_ledger.json",
+      "audit_ledger_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit_ledger.csv",
+      "audit_checks_total": 10,
+      "audit_checks_failed": 0,
+      "diagnostic_prior_failure": "seed20260518 exposed a wrapper manifest parser gap for TimesFM metrics.csv; no test predictions were generated, the wrapper was fixed, and seed20260519 passed.",
+      "boundary": "Smoke only; capped P3 target-pure membership; validation-only; GPU/CUDA TSFM XReg adaptation wrapper check; not a formal tuned-capacity result and not a final configuration selection."
+    }
+  },
+  "formal_tuned_capacity_validations": {
+    "p3_4_formal_tuned_validation_lightgbm_aluminum_load_4h_trials1_seed20260521": {
+      "status": "ok",
+      "script": "scripts/run_p3_formal_tuned_capacity_validation.py",
+      "audit_script": "scripts/audit_p3_formal_tuned_capacity_validation.py",
+      "model_id": "lightgbm",
+      "domain": "aluminum_load",
+      "horizon": "4h",
+      "n_trials": 1,
+      "completed_trials": 1,
+      "failed_trials": 0,
+      "best_validation_wape": 0.0187003588632243,
+      "test_predictions_generated": false,
+      "p3_subset_manifest": "data/energy_tsfm_formal_windows/p3_target_pure_v0_codex_20260514/subset_manifest.json",
+      "summary_manifest": "results/energy_tsfm_tuning/p3_4_formal_validation/p3_4_formal_tuned_validation_lightgbm_aluminum_load_4h_trials1_seed20260521/summary_manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_status.md",
+      "ledger_json": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_ledger.json",
+      "ledger_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_ledger.csv",
+      "audit_manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit_manifest.json",
+      "audit_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit_status.md",
+      "audit_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit.csv",
+      "audit_ledger_json": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit_ledger.json",
+      "audit_ledger_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit_ledger.csv",
+      "audit_checks_total": 11,
+      "audit_checks_failed": 0,
+      "servera_logical_cpus": 40,
+      "lightgbm_n_jobs": 36,
+      "cpu_policy": "LightGBM formal training/tuning may use about 90% CPU threads; ServerA default is --n-jobs 36.",
+      "pre_resource_policy_dry_run": "p3_4_formal_tuned_validation_lightgbm_aluminum_load_4h_trials3_seed20260520 completed 3/3 validation-only trials before automatic --n-jobs 36 wiring; keep as dry-run artifact, not as the resource-policy-compliant reference.",
+      "boundary": "Formal tuned-capacity validation-only; no test predictions; not final test-once and not a manuscript table result."
+    },
+    "p3_4_formal_tuned_validation_itransformer_aluminum_load_4h_trials1_seed20260522": {
+      "status": "ok",
+      "script": "scripts/run_p3_formal_tuned_capacity_validation.py",
+      "audit_script": "scripts/audit_p3_formal_tuned_capacity_validation.py",
+      "model_id": "itransformer",
+      "domain": "aluminum_load",
+      "horizon": "4h",
+      "n_trials": 1,
+      "completed_trials": 1,
+      "failed_trials": 0,
+      "best_validation_wape": 0.0006148213615226,
+      "test_predictions_generated": false,
+      "p3_subset_manifest": "data/energy_tsfm_formal_windows/p3_target_pure_v0_codex_20260514/subset_manifest.json",
+      "summary_manifest": "results/energy_tsfm_tuning/p3_4_formal_validation/p3_4_formal_tuned_validation_itransformer_aluminum_load_4h_trials1_seed20260522/summary_manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_status.md",
+      "ledger_json": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_ledger.json",
+      "ledger_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_ledger.csv",
+      "audit_manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit_manifest.json",
+      "audit_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit_status.md",
+      "audit_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit.csv",
+      "audit_ledger_json": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit_ledger.json",
+      "audit_ledger_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit_ledger.csv",
+      "audit_checks_total": 13,
+      "audit_checks_failed": 0,
+      "cuda_device_name": "NVIDIA RTX PRO 6000 Blackwell Workstation Edition",
+      "cuda_max_memory_allocated_bytes": 341387776,
+      "gpu_utilization_diagnostic": "CUDA-certified and full-membership validation-only, but peak allocated GPU memory is very low; create a resource-aware successor search space with larger batch/capacity or loader optimization before broad DL formal tuning.",
+      "training_budget_note": "First full-membership GPU validation path check used 8 epochs and patience 3 via extra runner args; it is not a final tuned-capacity result.",
+      "boundary": "Formal tuned-capacity validation-only GPU/DL path check; no test predictions; not final test-once and not a manuscript table result."
+    },
+    "p3_4_formal_tuned_validation_itransformer_aluminum_load_4h_trials1_seed20260525": {
+      "status": "ok",
+      "script": "scripts/run_p3_formal_tuned_capacity_validation.py",
+      "audit_script": "scripts/audit_p3_formal_tuned_capacity_validation.py",
+      "model_id": "itransformer",
+      "domain": "aluminum_load",
+      "horizon": "4h",
+      "n_trials": 1,
+      "completed_trials": 1,
+      "failed_trials": 0,
+      "best_validation_wape": 0.0006160907666706,
+      "test_predictions_generated": false,
+      "p3_subset_manifest": "data/energy_tsfm_formal_windows/p3_target_pure_v0_codex_20260514/subset_manifest.json",
+      "scaffold_manifest": "data/energy_tsfm_tuning/p3_resource_aware_dl_v0_codex_20260515/search_space_manifest.json",
+      "summary_manifest": "results/energy_tsfm_tuning/p3_4b_resource_aware_formal_validation/p3_4_formal_tuned_validation_itransformer_aluminum_load_4h_trials1_seed20260525/summary_manifest.json",
+      "run_manifest": "results/energy_tsfm_tuning/p3_4b_resource_aware_formal_validation/p3_4_formal_tuned_validation_itransformer_aluminum_load_4h_trials1_seed20260525/runner_outputs/itransformer/aluminum_load/4h/itransformer_p3_resource_aware_trial_000_p3_4_formal_tuned_validation_itransformer_aluminum_load_4h_trials1_seed20260525/seed20260525/manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_status.md",
+      "ledger_json": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_ledger.json",
+      "ledger_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_ledger.csv",
+      "audit_manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit_manifest.json",
+      "audit_status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit_status.md",
+      "audit_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit.csv",
+      "audit_ledger_json": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit_ledger.json",
+      "audit_ledger_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit_ledger.csv",
+      "audit_checks_total": 13,
+      "audit_checks_failed": 0,
+      "optuna_sampler": "TPESampler",
+      "optuna_sampler_seed": 20260525,
+      "cuda_device_name": "NVIDIA RTX PRO 6000 Blackwell Workstation Edition",
+      "cuda_max_memory_allocated_bytes": 1884515840,
+      "validation_prediction_rows": 8208,
+      "runtime_sec": 596.5929079055786,
+      "sampled_resource_params": {
+        "batch_size": 256,
+        "d_ff": 2048,
+        "d_model": 1024,
+        "dropout": 0.11951734318030022,
+        "e_layers": 4,
+        "epochs": 12,
+        "eval_batch_size": 1024,
+        "gradient_clip": 0.7545912931696914,
+        "learning_rate": 0.00015682262511962738,
+        "lr_patience": 4,
+        "n_heads": 8,
+        "num_workers": 12,
+        "patience": 6,
+        "weight_decay": 0.0007668428942437173
+      },
+      "resource_interpretation": "First full-membership P3-4b resource-aware iTransformer validation-only trial is CUDA-backed, seeded and about 5.52x the P3-4 seed20260522 peak allocated memory, but still far below ServerA GPU capacity; use as a formal path/resource diagnostic before broader DL scheduling, not as final test-once.",
+      "boundary": "Formal tuned-capacity validation-only resource-aware GPU/DL path check; no test predictions; not final test-once and not a manuscript table result."
+    }
+  },
+  "artifact_audits": {
+    "p2_2ad_pre_p3_gpu_artifact_audit": {
+      "status": "ok",
+      "checks_total": 137,
+      "checks_failed": 0,
+      "script": "scripts/audit_p2_pre_p3_gpu_artifacts.py",
+      "manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2ad_pre_p3_gpu_artifact_audit_manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2ad_pre_p3_gpu_artifact_audit_status.md",
+      "gpu_device_name": "NVIDIA RTX PRO 6000 Blackwell Workstation Edition",
+      "scope": "Supervised DL fixed-base cells, TSFM smoke/shared-dev/test-once artifacts, prediction split/row-count integrity, and superseded CPU/uncertified artifact detection."
+    },
+    "p2_2ae_pre_p3_memory_md_consistency_audit": {
+      "status": "ok",
+      "checks_total": 1139,
+      "hard_failures": 0,
+      "warnings": 0,
+      "script": "scripts/audit_p2_pre_p3_docs_consistency.py",
+      "manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2ae_pre_p3_memory_md_consistency_audit_manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2ae_pre_p3_memory_md_consistency_audit_status.md",
+      "scope": "Project instructions, .codex memory, research plans, experiment-design Markdown, registry JSON, active DL/TSFM runners, generated P2/P3 artifacts, artifact-hygiene eligibility index, endpoint-split boundary audit, P3 tuned-capacity scaffold audit and P3 Optuna smoke audit."
+    },
+    "p2_2af_test_window_alignment_audit": {
+      "status": "ok",
+      "checks_total": 540,
+      "checks_failed": 0,
+      "script": "scripts/audit_p2_test_window_alignment.py",
+      "manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2af_test_window_alignment_audit_manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2af_test_window_alignment_audit_status.md",
+      "scope": "P2 shared-development cross-model validation/test window equality for all master-summary models and active domains/horizons."
+    },
+    "p2_2ag_leakage_and_covariate_boundary_audit": {
+      "status": "ok",
+      "checks_total": 523,
+      "checks_failed": 0,
+      "script": "scripts/audit_p2_leakage_and_covariate_boundaries.py",
+      "manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2ag_leakage_and_covariate_boundary_audit_manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2ag_leakage_and_covariate_boundary_audit_status.md",
+      "summary_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2ag_leakage_and_covariate_boundary_audit_summary.csv",
+      "scope": "P2 shared-development leakage/covariate-boundary audit for active tree/DL/TSFM artifacts, including P1c chronology, split disjointness, future-target perturbation invariance, future-measured-exog perturbation invariance, prediction y_true serialization and no-future-measured-exog manifest contracts.",
+      "m5_extension": "Future measured exogenous columns inside batch.target are perturbed separately; active LightGBM, local DL, NeuralForecast, Chronos-2 and TimesFM input builders remain invariant. target_raw is protected label-surrogate metadata, not a permissible runner input."
+    },
+    "p2_2ai_endpoint_split_boundary_audit": {
+      "status": "ok_documented_boundary",
+      "hard_failures": 0,
+      "script": "scripts/audit_p2_endpoint_split_boundary.py",
+      "manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2ai_endpoint_split_boundary_audit_manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2ai_endpoint_split_boundary_audit_status.md",
+      "summary_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2ai_endpoint_split_boundary_audit.csv",
+      "examples_json": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2ai_endpoint_split_boundary_audit_examples.json",
+      "scope": "Quantifies endpoint-split boundary windows where context or early target steps come from the previous chronological split; documents P3 target-pure/embargo or sensitivity requirement.",
+      "p3_recommendation": "P3 main results use the target-pure formal window set p3_target_pure_v0_codex_20260514; endpoint-split results are sensitivity-only. H2 diagnostics must use context-only origin-time information."
+    },
+    "p3_1_runner_membership_bridge_audit": {
+      "status": "ok",
+      "checks_total": 45,
+      "checks_failed": 0,
+      "script": "scripts/audit_p3_runner_membership_bridge.py",
+      "manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p3_1_runner_membership_bridge_audit_manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_1_runner_membership_bridge_audit_status.md",
+      "checks_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_1_runner_membership_bridge_audit.csv",
+      "subset_manifest_json": "data/energy_tsfm_formal_windows/p3_target_pure_v0_codex_20260514/subset_manifest.json",
+      "scope": "Verifies that the P3-0 target-pure formal window set is available as a P2-style runner subset manifest, that all positions match split-local P1c window IDs and membership.parquet, and that active LightGBM/DL/TSFM runners expose the required manifest CLI arguments."
+    },
+    "p3_2_tuned_capacity_scaffold_audit": {
+      "status": "ok",
+      "checks_total": 107,
+      "checks_failed": 0,
+      "script": "scripts/audit_p3_tuned_capacity_scaffold.py",
+      "manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p3_2_tuned_capacity_scaffold_audit_manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_2_tuned_capacity_scaffold_audit_status.md",
+      "checks_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_2_tuned_capacity_scaffold_audit.csv",
+      "search_space_manifest": "data/energy_tsfm_tuning/p3_tuned_capacity_v0_codex_20260514/search_space_manifest.json",
+      "scope": "Verifies P3 tuned-capacity search spaces, positive budgets, validation-only command templates, P3 subset-manifest wiring, CUDA enforcement for DL/TSFM entries, and runner CLI support for every registered search parameter."
+    },
+    "p3_3_optuna_tuned_capacity_smoke_audit": {
+      "status": "ok",
+      "checks_total": 10,
+      "checks_failed": 0,
+      "script": "scripts/audit_p3_optuna_tuned_capacity_smoke.py",
+      "manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit_manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit_status.md",
+      "checks_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit.csv",
+      "summary_manifest": "results/energy_tsfm_tuning/p3_3_optuna_smoke/p3_3_optuna_smoke_timesfm2p5_xreg_aluminum_load_4h_trials1_seed20260519/summary_manifest.json",
+      "smoke_ledger_json": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_ledger.json",
+      "smoke_ledger_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_ledger.csv",
+      "audit_ledger_json": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit_ledger.json",
+      "audit_ledger_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_3_optuna_tuned_capacity_smoke_audit_ledger.csv",
+      "ledger_records_total": 4,
+      "audit_ledger_records_total": 3,
+      "known_diagnostic_failures": 1,
+      "passed_model_ids": [
+        "lightgbm",
+        "itransformer",
+        "timesfm2p5_xreg"
+      ],
+      "scope": "Verifies the P3-3 Optuna tuned-capacity smoke ledger: LightGBM validation-only wrapper, iTransformer GPU/CUDA validation-only wrapper, and TimesFM 2.5 XReg GPU/CUDA TSFM adaptation wrapper completed without generating test predictions. The retained seed20260518 TimesFM failure is a diagnostic wrapper-manifest parser failure fixed before the passing seed20260519 rerun."
+    },
+    "p3_4_formal_tuned_capacity_validation_audit": {
+      "status": "ok",
+      "checks_total": 13,
+      "checks_failed": 0,
+      "script": "scripts/audit_p3_formal_tuned_capacity_validation.py",
+      "manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit_manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit_status.md",
+      "checks_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit.csv",
+      "summary_manifest": "results/energy_tsfm_tuning/p3_4_formal_validation/p3_4_formal_tuned_validation_itransformer_aluminum_load_4h_trials1_seed20260522/summary_manifest.json",
+      "validation_ledger_json": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_ledger.json",
+      "validation_ledger_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_ledger.csv",
+      "audit_ledger_json": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit_ledger.json",
+      "audit_ledger_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4_formal_tuned_capacity_validation_audit_ledger.csv",
+      "ledger_records_total": 3,
+      "audit_ledger_records_total": 3,
+      "scope": "Verifies P3-4 full-membership validation-only trial artifacts for LightGBM with --n-jobs 36 and iTransformer with CUDA manifest evidence. No passing P3-4 record generated test predictions."
+    },
+    "p3_4b_resource_aware_dl_scaffold_audit": {
+      "status": "ok",
+      "checks_total": 89,
+      "checks_failed": 0,
+      "script": "scripts/audit_p3_resource_aware_dl_scaffold.py",
+      "manifest": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4b_resource_aware_dl_scaffold_audit_manifest.json",
+      "status_note": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4b_resource_aware_dl_scaffold_audit_status.md",
+      "checks_csv": "zettel/papers/energy_tsfm_ops/experiment_design/p3_4b_resource_aware_dl_scaffold_audit.csv",
+      "search_space_manifest": "data/energy_tsfm_tuning/p3_resource_aware_dl_v0_codex_20260515/search_space_manifest.json",
+      "scope": "Verifies the P3-4b resource-aware DL/Transformer successor scaffold: validation-only, CUDA-required, P3 target-pure subset, expanded batch/capacity/loader knobs and runner CLI coverage."
+    }
+  },
+  "artifact_hygiene": {
+    "pre_p3_20260514": {
+      "status": "documented",
+      "index_md": "zettel/papers/energy_tsfm_ops/experiment_design/p2_2ah_pre_p3_artifact_hygiene_status.md",
+      "index_json": "zettel/papers/energy_tsfm_ops/experiment_design/pre_p3_artifact_eligibility_index.json",
+      "rule": "P2 smoke/dev artifacts are not manuscript final results; DL/TSFM artifacts are eligible for P2/P3 records only when CUDA/GPU evidence is present or P2-2ad certifies them."
+    }
+  }
+}

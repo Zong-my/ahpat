@@ -1,0 +1,29 @@
+{
+  "lock_id": "p3_4by_lightgbm_aidc_power_optional_24h",
+  "model_id": "lightgbm",
+  "route_id": "lightgbm",
+  "domain_id": "aidc_power_optional",
+  "horizon": "24h",
+  "portfolio_group": "non_tsfm",
+  "adaptation_kind": "supervised_full_train_refit",
+  "seed": 20260602,
+  "best_params": {
+    "colsample_bytree": 0.6711795538910812,
+    "learning_rate": 0.04038182478585534,
+    "max_depth": 8,
+    "min_child_samples": 33,
+    "n_estimators": 800,
+    "num_leaves": 63,
+    "reg_alpha": 0.35892098394489746,
+    "reg_lambda": 0.0005016042271117429,
+    "subsample": 0.8559901000320174
+  },
+  "validation_wape": "0.1730522191238639",
+  "selected_config_or_variant": "p3_4j_locked",
+  "selected_feature_policy": "model_native",
+  "full_train_or_refit": "True",
+  "uses_cuda": "False",
+  "parameter_count_total": "",
+  "parameter_count_trainable": "",
+  "source_manifest_relative": "results/energy_tsfm_tuning/p3_4c_formal_scheduler/p3_4_formal_tuned_validation_lightgbm_aidc_power_optional_24h_trials1_seed20260602/summary_manifest.json"
+}

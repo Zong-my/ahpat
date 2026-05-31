@@ -1,0 +1,33 @@
+{
+  "lock_id": "p3_4by_nbeatsx_arena_pv_4h",
+  "model_id": "nbeatsx",
+  "route_id": "nbeatsx",
+  "domain_id": "arena_pv",
+  "horizon": "4h",
+  "portfolio_group": "non_tsfm",
+  "adaptation_kind": "supervised_full_train_refit",
+  "seed": 20260811,
+  "best_params": {
+    "batch_size": 256,
+    "dropout": 0.2092656694433514,
+    "early_stop_patience_steps": 300,
+    "inference_windows_batch_size": 4096,
+    "learning_rate": 0.000721501817877063,
+    "max_steps": 600,
+    "nbeatsx_blocks": 4,
+    "nbeatsx_width": 512,
+    "scaler_type": "identity",
+    "val_check_steps": 300,
+    "valid_batch_size": 256,
+    "weight_decay": 1.1133939118395806e-05,
+    "windows_batch_size": 1024
+  },
+  "validation_wape": "0.3250299474565841",
+  "selected_config_or_variant": "p3_4bc_confirmed",
+  "selected_feature_policy": "model_native",
+  "full_train_or_refit": "True",
+  "uses_cuda": "True",
+  "parameter_count_total": "63496904.0",
+  "parameter_count_trainable": "",
+  "source_manifest_relative": "results/energy_tsfm_tuning/p3_4bc_full_validation_confirmation/p3_4_formal_tuned_validation_nbeatsx_arena_pv_4h_trials1_seed20260811/summary_manifest.json"
+}

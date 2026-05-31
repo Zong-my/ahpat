@@ -1,0 +1,32 @@
+{
+  "cols": 51,
+  "duplicate_time_rate_by_series": {
+    "provincial_load_1": 0.0,
+    "provincial_load_2": 0.0
+  },
+  "inferred_step_by_series": {
+    "provincial_load_1": "0 days 00:15:00",
+    "provincial_load_2": "0 days 00:15:00"
+  },
+  "notes": [
+    "Manuscript-facing text must describe this as an anonymized real provincial grid-load dataset from northern China.",
+    "Concrete province and child identifiers are not written to canonical outputs.",
+    "Weather join uses timestamp intersection, so the current canonical span follows the weather table."
+  ],
+  "rows": 140928,
+  "series_count": 2,
+  "source_paths": [
+    "(removed: original source path)",
+    "(removed: original source path)"
+  ],
+  "split_counts": {
+    "test": 21140,
+    "train": 98648,
+    "validation": 21140
+  },
+  "target": "load",
+  "target_missing_rate": 0.0,
+  "timestamp_max": "2022-04-28 23:45:00",
+  "timestamp_min": "2020-04-01 00:00:00",
+  "timestamp_missing_rate": 0.0
+}

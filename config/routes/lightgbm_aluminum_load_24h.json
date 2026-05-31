@@ -1,0 +1,29 @@
+{
+  "lock_id": "p3_4by_lightgbm_aluminum_load_24h",
+  "model_id": "lightgbm",
+  "route_id": "lightgbm",
+  "domain_id": "aluminum_load",
+  "horizon": "24h",
+  "portfolio_group": "non_tsfm",
+  "adaptation_kind": "supervised_full_train_refit",
+  "seed": 20260604,
+  "best_params": {
+    "colsample_bytree": 0.7001881900881111,
+    "learning_rate": 0.026827966462951207,
+    "max_depth": 6,
+    "min_child_samples": 41,
+    "n_estimators": 700,
+    "num_leaves": 31,
+    "reg_alpha": 0.14180565468167358,
+    "reg_lambda": 4.489966198521898e-06,
+    "subsample": 0.6141803883558329
+  },
+  "validation_wape": "0.1454457533790234",
+  "selected_config_or_variant": "p3_4j_locked",
+  "selected_feature_policy": "model_native",
+  "full_train_or_refit": "True",
+  "uses_cuda": "False",
+  "parameter_count_total": "",
+  "parameter_count_trainable": "",
+  "source_manifest_relative": "results/energy_tsfm_tuning/p3_4c_formal_scheduler/p3_4_formal_tuned_validation_lightgbm_aluminum_load_24h_trials1_seed20260604/summary_manifest.json"
+}

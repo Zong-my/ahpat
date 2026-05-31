@@ -1,0 +1,6 @@
+policy_id,p5_role,deployable,oracle_upper_bound,locked_for_initial_p5,validation_basis,metric_signal
+cell_validation_winner,primary_deployable_h2_policy,True,False,True,P3-4ay best deployable aggregate WAPE and P3-4az best deployable decision-weighted WAPE,best_deployable_p3_4ay
+context_diagnostic_nn_loow,secondary_diagnostic_h2_policy,True,False,True,P3-4ay/P3-4az diagnostic selector comparator; not primary because it trails cell_validation_winner,
+context_diagnostic_nn_leave_cell_out,conservative_selector_sensitivity,True,False,True,P3-4ay/P3-4az leave-cell-out sensitivity,
+always_timesfm2p5_xreg_ordinary_h1_rep,best_always_route_comparator,True,False,True,P3-4ay best always-use route comparator,best_always_p3_4ay
+oracle_per_window_best,non_deployable_upper_bound_only,False,True,True,Upper bound/regret denominator only; never a method,best_policy_by_average_and_weighted_wape

@@ -1,0 +1,33 @@
+{
+  "lock_id": "p3_4by_nbeatsx_aidc_power_optional_4h",
+  "model_id": "nbeatsx",
+  "route_id": "nbeatsx",
+  "domain_id": "aidc_power_optional",
+  "horizon": "4h",
+  "portfolio_group": "non_tsfm",
+  "adaptation_kind": "supervised_full_train_refit",
+  "seed": 20260808,
+  "best_params": {
+    "batch_size": 512,
+    "dropout": 0.09766611685928156,
+    "early_stop_patience_steps": 300,
+    "inference_windows_batch_size": 8192,
+    "learning_rate": 0.000353533054947386,
+    "max_steps": 600,
+    "nbeatsx_blocks": 4,
+    "nbeatsx_width": 2048,
+    "scaler_type": "robust",
+    "val_check_steps": 300,
+    "valid_batch_size": 256,
+    "weight_decay": 5.168528974753161e-05,
+    "windows_batch_size": 4096
+  },
+  "validation_wape": "0.1163804301105482",
+  "selected_config_or_variant": "p3_4bc_confirmed",
+  "selected_feature_policy": "model_native",
+  "full_train_or_refit": "True",
+  "uses_cuda": "True",
+  "parameter_count_total": "303735852.0",
+  "parameter_count_trainable": "",
+  "source_manifest_relative": "results/energy_tsfm_tuning/p3_4bc_full_validation_confirmation/p3_4_formal_tuned_validation_nbeatsx_aidc_power_optional_4h_trials1_seed20260808/summary_manifest.json"
+}

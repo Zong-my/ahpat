@@ -1,0 +1,33 @@
+{
+  "lock_id": "p3_4by_nbeatsx_provincial_load_24h",
+  "model_id": "nbeatsx",
+  "route_id": "nbeatsx",
+  "domain_id": "provincial_load",
+  "horizon": "24h",
+  "portfolio_group": "non_tsfm",
+  "adaptation_kind": "supervised_full_train_refit",
+  "seed": 20260630,
+  "best_params": {
+    "batch_size": 128,
+    "dropout": 0.17166393472975305,
+    "early_stop_patience_steps": 600,
+    "inference_windows_batch_size": 2048,
+    "learning_rate": 0.00010918209325541713,
+    "max_steps": 1000,
+    "nbeatsx_blocks": 6,
+    "nbeatsx_width": 1024,
+    "scaler_type": "robust",
+    "val_check_steps": 200,
+    "valid_batch_size": 256,
+    "weight_decay": 4.1716937527473545e-06,
+    "windows_batch_size": 1024
+  },
+  "validation_wape": "0.2237287854762983",
+  "selected_config_or_variant": "p3_4j_locked",
+  "selected_feature_policy": "model_native",
+  "full_train_or_refit": "True",
+  "uses_cuda": "True",
+  "parameter_count_total": "115105164.0",
+  "parameter_count_trainable": "",
+  "source_manifest_relative": "results/energy_tsfm_tuning/p3_4c_formal_scheduler/p3_4_formal_tuned_validation_nbeatsx_provincial_load_24h_trials1_seed20260630/summary_manifest.json"
+}

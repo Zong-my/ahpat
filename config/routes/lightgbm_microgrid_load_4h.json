@@ -1,0 +1,29 @@
+{
+  "lock_id": "p3_4by_lightgbm_microgrid_load_4h",
+  "model_id": "lightgbm",
+  "route_id": "lightgbm",
+  "domain_id": "microgrid_load",
+  "horizon": "4h",
+  "portfolio_group": "non_tsfm",
+  "adaptation_kind": "supervised_full_train_refit",
+  "seed": 20260805,
+  "best_params": {
+    "colsample_bytree": 0.9640516233839841,
+    "learning_rate": 0.01345158119393516,
+    "max_depth": 10,
+    "min_child_samples": 76,
+    "n_estimators": 1800,
+    "num_leaves": 127,
+    "reg_alpha": 7.087731207776624e-05,
+    "reg_lambda": 8.124638093807127e-07,
+    "subsample": 0.6760017852582867
+  },
+  "validation_wape": "0.0854106578442145",
+  "selected_config_or_variant": "p3_4bc_confirmed",
+  "selected_feature_policy": "model_native",
+  "full_train_or_refit": "True",
+  "uses_cuda": "False",
+  "parameter_count_total": "",
+  "parameter_count_trainable": "",
+  "source_manifest_relative": "results/energy_tsfm_tuning/p3_4bc_full_validation_confirmation/p3_4_formal_tuned_validation_lightgbm_microgrid_load_4h_trials1_seed20260805/summary_manifest.json"
+}

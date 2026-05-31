@@ -1,0 +1,33 @@
+{
+  "lock_id": "p3_4by_nbeatsx_microgrid_load_4h",
+  "model_id": "nbeatsx",
+  "route_id": "nbeatsx",
+  "domain_id": "microgrid_load",
+  "horizon": "4h",
+  "portfolio_group": "non_tsfm",
+  "adaptation_kind": "supervised_full_train_refit",
+  "seed": 20260627,
+  "best_params": {
+    "batch_size": 512,
+    "dropout": 0.09998532562464921,
+    "early_stop_patience_steps": 300,
+    "inference_windows_batch_size": 8192,
+    "learning_rate": 6.437247014713604e-05,
+    "max_steps": 4000,
+    "nbeatsx_blocks": 4,
+    "nbeatsx_width": 2048,
+    "scaler_type": "robust",
+    "val_check_steps": 200,
+    "valid_batch_size": 256,
+    "weight_decay": 3.402565384051803e-05,
+    "windows_batch_size": 1024
+  },
+  "validation_wape": "0.147426378166769",
+  "selected_config_or_variant": "p3_4j_locked",
+  "selected_feature_policy": "model_native",
+  "full_train_or_refit": "True",
+  "uses_cuda": "True",
+  "parameter_count_total": "231719976.0",
+  "parameter_count_trainable": "",
+  "source_manifest_relative": "results/energy_tsfm_tuning/p3_4c_formal_scheduler/p3_4_formal_tuned_validation_nbeatsx_microgrid_load_4h_trials1_seed20260627/summary_manifest.json"
+}

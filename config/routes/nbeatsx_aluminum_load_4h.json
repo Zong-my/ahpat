@@ -1,0 +1,33 @@
+{
+  "lock_id": "p3_4by_nbeatsx_aluminum_load_4h",
+  "model_id": "nbeatsx",
+  "route_id": "nbeatsx",
+  "domain_id": "aluminum_load",
+  "horizon": "4h",
+  "portfolio_group": "non_tsfm",
+  "adaptation_kind": "supervised_full_train_refit",
+  "seed": 20260623,
+  "best_params": {
+    "batch_size": 256,
+    "dropout": 0.18716438872675764,
+    "early_stop_patience_steps": 600,
+    "inference_windows_batch_size": 4096,
+    "learning_rate": 0.0006824406478056157,
+    "max_steps": 2000,
+    "nbeatsx_blocks": 4,
+    "nbeatsx_width": 2048,
+    "scaler_type": "robust",
+    "val_check_steps": 400,
+    "valid_batch_size": 256,
+    "weight_decay": 0.00012761345384007137,
+    "windows_batch_size": 2048
+  },
+  "validation_wape": "0.0012787272479796",
+  "selected_config_or_variant": "p3_4j_locked",
+  "selected_feature_policy": "model_native",
+  "full_train_or_refit": "True",
+  "uses_cuda": "True",
+  "parameter_count_total": "207209160.0",
+  "parameter_count_trainable": "",
+  "source_manifest_relative": "results/energy_tsfm_tuning/p3_4c_formal_scheduler/p3_4_formal_tuned_validation_nbeatsx_aluminum_load_4h_trials1_seed20260623/summary_manifest.json"
+}

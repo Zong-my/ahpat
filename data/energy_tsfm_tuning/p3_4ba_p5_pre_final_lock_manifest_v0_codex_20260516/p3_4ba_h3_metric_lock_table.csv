@@ -1,0 +1,7 @@
+metric_or_scope,p5_role,definition_lock,threshold_source,test_rule
+average_full_window_metrics,primary_average_comparison,MAE/RMSE/WAPE/sMAPE/R2/bias over identical test windows,not_applicable,evaluate once after P5 final lock only
+decision_weighted_wape,primary_H3_operation_sensitive_metric,window decision_weight times abs error over window decision_weight times abs true,train_window_metadata_only,use the locked train-quantile protocol; do not fit thresholds on test
+critical_union,primary_H3_stress_scope,peak_q90 OR ramp_range_q90 OR high_energy_sum_q90 OR pv_low_generation_q20,train_window_metadata_only,apply train thresholds to test labels only for evaluation stratification
+peak_q90,H3_component_scope,target_max >= train target_max 90th percentile for the same domain/horizon,train_window_metadata_only,no test threshold fitting
+ramp_range_q90,H3_component_scope,target_range >= train target_range 90th percentile for the same domain/horizon,train_window_metadata_only,no test threshold fitting
+pv_low_generation_q20,PV scarcity sensitivity,arena_pv target_sum <= train target_sum 20th percentile,train_window_metadata_only,PV only; no test threshold fitting

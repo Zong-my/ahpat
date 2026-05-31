@@ -1,0 +1,27 @@
+# Core
+numpy>=2.0
+pandas>=2.0
+scipy>=1.12
+matplotlib>=3.8
+scikit-learn>=1.4
+
+# Deep learning
+torch>=2.4
+pytorch-lightning>=2.2
+torchmetrics>=1.0
+peft>=0.10
+
+# Tree models
+lightgbm>=4.3
+
+# Time-series deep learning
+neuralforecast>=3.0
+
+# TSFM foundation models
+transformers>=4.45
+chronos-forecasting>=2.0
+timesfm>=2.0
+
+# Utilities
+Pillow>=10.0
+einops>=0.7

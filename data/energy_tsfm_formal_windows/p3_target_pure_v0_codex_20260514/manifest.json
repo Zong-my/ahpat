@@ -1,0 +1,35 @@
+{
+  "domains": [
+    "aidc_power_optional",
+    "aluminum_load",
+    "arena_pv",
+    "microgrid_load",
+    "provincial_load"
+  ],
+  "dropped_target_mixed_windows": 2312,
+  "formal_window_set_id": "p3_target_pure_v0_codex_20260514",
+  "hard_failures": 0,
+  "horizons": [
+    "4h",
+    "24h"
+  ],
+  "important_boundary": "P3 main-result window membership only. It does not create model predictions, tuned hyperparameters or manuscript-scale metrics.",
+  "manifest": "data/energy_tsfm_formal_windows/p3_target_pure_v0_codex_20260514/manifest.json",
+  "membership_parquet": "data/energy_tsfm_formal_windows/p3_target_pure_v0_codex_20260514/membership.parquet",
+  "p1c_endpoint_windows": 637427,
+  "p3_selected_windows": 635115,
+  "policy": "target_pure_validation_test",
+  "selected_context_prior_windows": 4032,
+  "selected_target_mixed_windows": 0,
+  "selection_rule": "selected_for_p3_main iff every target-row split equals the endpoint split recorded in the P1c window index",
+  "splits": [
+    "train",
+    "validation",
+    "test"
+  ],
+  "status": "ok",
+  "status_doc": "zettel/papers/energy_tsfm_ops/experiment_design/p3_0_target_pure_window_policy_status.md",
+  "subset_manifest_json": "data/energy_tsfm_formal_windows/p3_target_pure_v0_codex_20260514/subset_manifest.json",
+  "summary_csv": "data/energy_tsfm_formal_windows/p3_target_pure_v0_codex_20260514/summary.csv",
+  "train_dropped_target_mixed_windows": 0
+}

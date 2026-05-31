@@ -1,0 +1,20 @@
+{
+  "lock_id": "p3_4by_timesfm2p5_xreg_microgrid_load_24h",
+  "model_id": "timesfm2p5",
+  "route_id": "timesfm2p5_xreg_cellwise_parity_ablation_p3_4bp",
+  "domain_id": "microgrid_load",
+  "horizon": "24h",
+  "portfolio_group": "tsfm",
+  "adaptation_kind": "xreg_covariate_adaptation_no_parameter_finetune",
+  "seed": "",
+  "best_params": {},
+  "validation_wape": "0.1326896778898609",
+  "selected_config_or_variant": "timesfm2p5_p3_4bp_target_global_plus_lead_ridge1e_3",
+  "selected_feature_policy": "target_global_plus_lead_ridge1e_3",
+  "full_train_or_refit": "True",
+  "uses_cuda": "True",
+  "parameter_count_total": "231289280.0",
+  "parameter_count_trainable": "0.0",
+  "p5_batch_size": "64.0",
+  "p5_eval_batch_size": "64.0"
+}

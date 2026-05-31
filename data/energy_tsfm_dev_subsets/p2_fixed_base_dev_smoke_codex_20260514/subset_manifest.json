@@ -1,0 +1,101 @@
+{
+  "created_at_unix": 1778734302.1739163,
+  "domains": [
+    "aluminum_load"
+  ],
+  "horizons": [
+    "4h"
+  ],
+  "interpretation": "Shared development subsets only; not a replacement for full final evaluation windows.",
+  "max_test_windows": 4,
+  "max_train_windows": 16,
+  "max_val_windows": 4,
+  "seed": 20260514,
+  "status": "ok",
+  "subset_id": "p2_fixed_base_dev_smoke_codex_20260514",
+  "subsets": {
+    "aluminum_load": {
+      "4h": {
+        "domain_id": "aluminum_load",
+        "horizon": "4h",
+        "sampling_rule": "shared sample_positions over P1c split-local indexes; 0 means full split; first/middle/last anchors are always included",
+        "seed": 20260514,
+        "source_window_counts": {
+          "test": 6015,
+          "train": 41679,
+          "validation": 8283
+        },
+        "subset_id": "p2_fixed_base_dev_smoke_codex_20260514",
+        "test": {
+          "count": 4,
+          "positions": [
+            0,
+            1368,
+            3007,
+            6014
+          ],
+          "window_ids": [
+            "aluminum_load__4h__aluminum_load_20001_seg0008__00000792",
+            "aluminum_load__4h__aluminum_load_20002_seg0008__00000984",
+            "aluminum_load__4h__aluminum_load_20003_seg0008__00001433",
+            "aluminum_load__4h__aluminum_load_20005_seg0010__00000136"
+          ]
+        },
+        "train": {
+          "count": 16,
+          "positions": [
+            0,
+            2477,
+            3159,
+            4810,
+            10170,
+            13173,
+            18193,
+            20839,
+            22169,
+            25472,
+            28274,
+            29477,
+            33919,
+            35277,
+            40554,
+            41678
+          ],
+          "window_ids": [
+            "aluminum_load__4h__aluminum_load_20001_seg0001__00000095",
+            "aluminum_load__4h__aluminum_load_20001_seg0003__00001277",
+            "aluminum_load__4h__aluminum_load_20001_seg0003__00001959",
+            "aluminum_load__4h__aluminum_load_20001_seg0004__00000270",
+            "aluminum_load__4h__aluminum_load_20002_seg0003__00000801",
+            "aluminum_load__4h__aluminum_load_20002_seg0004__00000464",
+            "aluminum_load__4h__aluminum_load_20003_seg0003__00000547",
+            "aluminum_load__4h__aluminum_load_20003_seg0003__00003193",
+            "aluminum_load__4h__aluminum_load_20003_seg0004__00001183",
+            "aluminum_load__4h__aluminum_load_20004_seg0001__00000887",
+            "aluminum_load__4h__aluminum_load_20004_seg0002__00002372",
+            "aluminum_load__4h__aluminum_load_20004_seg0003__00000235",
+            "aluminum_load__4h__aluminum_load_20005_seg0001__00001079",
+            "aluminum_load__4h__aluminum_load_20005_seg0001__00002437",
+            "aluminum_load__4h__aluminum_load_20005_seg0002__00000989",
+            "aluminum_load__4h__aluminum_load_20005_seg0004__00000298"
+          ]
+        },
+        "validation": {
+          "count": 4,
+          "positions": [
+            0,
+            4141,
+            5078,
+            8282
+          ],
+          "window_ids": [
+            "aluminum_load__4h__aluminum_load_20001_seg0006__00001883",
+            "aluminum_load__4h__aluminum_load_20003_seg0007__00000095",
+            "aluminum_load__4h__aluminum_load_20004_seg0005__00002040",
+            "aluminum_load__4h__aluminum_load_20005_seg0006__00000711"
+          ]
+        }
+      }
+    }
+  }
+}

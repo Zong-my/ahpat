@@ -1,0 +1,29 @@
+{
+  "lock_id": "p3_4by_lightgbm_arena_pv_24h",
+  "model_id": "lightgbm",
+  "route_id": "lightgbm",
+  "domain_id": "arena_pv",
+  "horizon": "24h",
+  "portfolio_group": "non_tsfm",
+  "adaptation_kind": "supervised_full_train_refit",
+  "seed": 20260803,
+  "best_params": {
+    "colsample_bytree": 0.7237072296449977,
+    "learning_rate": 0.01862253322374517,
+    "max_depth": 6,
+    "min_child_samples": 54,
+    "n_estimators": 400,
+    "num_leaves": 63,
+    "reg_alpha": 2.560826567888284e-06,
+    "reg_lambda": 2.3912059956985886e-06,
+    "subsample": 0.8935910343094661
+  },
+  "validation_wape": "0.5312216532634085",
+  "selected_config_or_variant": "p3_4bc_confirmed",
+  "selected_feature_policy": "model_native",
+  "full_train_or_refit": "True",
+  "uses_cuda": "False",
+  "parameter_count_total": "",
+  "parameter_count_trainable": "",
+  "source_manifest_relative": "results/energy_tsfm_tuning/p3_4bc_full_validation_confirmation/p3_4_formal_tuned_validation_lightgbm_arena_pv_24h_trials1_seed20260803/summary_manifest.json"
+}

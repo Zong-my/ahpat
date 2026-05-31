@@ -1,0 +1,30 @@
+{
+  "cols": 17,
+  "duplicate_time_rate_by_series": {
+    "arena_gannsf1_pv": 0.0
+  },
+  "inferred_step_by_series": {
+    "arena_gannsf1_pv": "0 days 00:15:00"
+  },
+  "notes": [
+    "First-pass site is GANNSF1 because validation showed the lowest target missingness among inspected sites.",
+    "CSV.GZ is used instead of parquet because it preserves explicit `datetime`.",
+    "Native 1-minute data are resampled to 15 minutes by mean."
+  ],
+  "rows": 20777,
+  "series_count": 1,
+  "source_paths": [
+    "(removed: original source path)",
+    "(removed: original source path)"
+  ],
+  "split_counts": {
+    "test": 3117,
+    "train": 14543,
+    "validation": 3117
+  },
+  "target": "pvexport_data_power_real",
+  "target_missing_rate": 0.0,
+  "timestamp_max": "2020-12-07 23:45:00",
+  "timestamp_min": "2020-05-01 00:00:00",
+  "timestamp_missing_rate": 0.0
+}
