@@ -1,5 +1,7 @@
 # AHPAT: Route-Level Qualification Protocol for Multi-Energy TSFM Forecasting
 
+![AHPAT framework: route-level qualification protocol for multi-energy TSFM forecasting](docs/fig1_framework_design.png)
+
 Reproducibility package for the paper submitted to the *Applied Energy* special issue on large models for next-generation energy systems.
 
 ## Overview
