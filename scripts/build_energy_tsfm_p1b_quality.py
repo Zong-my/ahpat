@@ -401,7 +401,7 @@ def write_report(validations: list[dict[str, Any]]) -> None:
             "",
             "## Edge Audit",
             "",
-            "Claude's follow-up review was rechecked by `scripts/audit_energy_tsfm_p1b_quality_claims.py`; the recomputed artifact is `.codex/data_validation/energy_tsfm_ops/p1b_quality_edge_audit.json`.",
+            "A follow-up edge review was rechecked by `scripts/audit_energy_tsfm_p1b_quality_claims.py`; the recomputed artifact is `.codex/data_validation/energy_tsfm_ops/p1b_quality_edge_audit.json`.",
             "",
             "Confirmed issues and boundaries:",
             "",
