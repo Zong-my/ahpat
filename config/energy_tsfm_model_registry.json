@@ -149,7 +149,7 @@
       "venue_or_status": "sanity reference baseline",
       "code_or_weights": "local project adapter",
       "horizon_limit_steps": null,
-      "primary_environment": "ahpat",
+      "primary_environment": "tsfm_routing",
       "status": "planned_smoke",
       "notes": "Reference-line baseline only; not a headline strong baseline and not part of the main performance table."
     },
@@ -172,7 +172,7 @@
       "venue_or_status": "classical strong baseline",
       "code_or_weights": "local Python package",
       "horizon_limit_steps": null,
-      "primary_environment": "ahpat",
+      "primary_environment": "tsfm_routing",
       "status": "planned_smoke",
       "notes": "Main tabular feature-engineering baseline. Features must be registered and segment-safe."
     },
@@ -194,7 +194,7 @@
       "venue_or_status": "energy-forecasting accepted deep baseline",
       "code_or_weights": "local Python package or project adapter",
       "horizon_limit_steps": null,
-      "primary_environment": "ahpat",
+      "primary_environment": "tsfm_routing",
       "status": "planned_smoke",
       "notes": "Covariate-aware interpretable deep baseline."
     },
@@ -217,7 +217,7 @@
       "venue_or_status": "strong deep forecasting baseline",
       "code_or_weights": "local Python package or project adapter",
       "horizon_limit_steps": null,
-      "primary_environment": "ahpat",
+      "primary_environment": "tsfm_routing",
       "status": "planned_smoke",
       "notes": "Use N-BEATSx rather than plain N-BEATS when exogenous variables are available."
     },
@@ -240,7 +240,7 @@
       "venue_or_status": "modern supervised Transformer baseline",
       "code_or_weights": "local Python package or project adapter",
       "horizon_limit_steps": null,
-      "primary_environment": "ahpat",
+      "primary_environment": "tsfm_routing",
       "status": "fixed_base_passed",
       "notes": "Modern multivariate Transformer supervised baseline. supports_covariates=true means the project-local supervised adapter/runner can consume audited historical and known-future covariates; it is not a claim that the NeuralForecast class alone provides every future-known TSFM-style covariate interface."
     },
@@ -268,7 +268,7 @@
         "https://github.com/thuml/Time-Series-Library"
       ],
       "horizon_limit_steps": null,
-      "primary_environment": "ahpat",
+      "primary_environment": "tsfm_routing",
       "status": "formal_dryrun_passed",
       "notes": "Main-table exogenous-variable Transformer baseline with explicit future-known calendar path. It does not replace iTransformer. Current fixed-base dry-run uses future calendar only; future weather forecast covariates require documented origin-time forecast construction before manuscript use."
     },
@@ -335,7 +335,7 @@
       "venue_or_status": "xLSTM TSFM; venue/version must be re-verified before manuscript tables",
       "code_or_weights": "NX-AI/TiRex",
       "horizon_limit_steps": null,
-      "primary_environment": "ahpat_or_isolated_if_needed",
+      "primary_environment": "tsfm_routing_or_isolated_if_needed",
       "status": "full_power_package_import_passed_weights_not_cached_license_review_required",
       "notes": "xLSTM TSFM; adds architectural diversity. License caveat and exact venue/version claim must be verified before any manuscript table or text uses it.",
       "full_power_audit": {
@@ -523,7 +523,7 @@
       "venue_or_status": "public release / arXiv, no top-conference venue confirmed",
       "code_or_weights": "amazon/chronos-2; amazon-science/chronos-forecasting",
       "horizon_limit_steps": 1024,
-      "primary_environment": "ahpat",
+      "primary_environment": "tsfm_routing",
       "status": "full_power_covariate_lora_selected_test_once_passed",
       "notes": "Most practical covariate-aware probabilistic TSFM backbone. Full-power covariate-aware P1c smoke passed, LoRA fine-tuning preflight passed on aluminum_load/4h, P2-2u shared-development scaling passed across all 5 domains x 2 horizons, P2-2v/P2-2w validation-only budget checks selected 128/32 windows, 50 steps and learning rate 5e-5, P2-2x locked a validation WAPE rule selecting LoRA for 7 cells and zero-shot for 3 cells, and P2-2y completed the selected-route test-once evaluation on the shared P2 development subset. This is P2 development evidence, not the final manuscript-scale P3 result.",
       "full_power_audit": {
@@ -590,7 +590,7 @@
       "venue_or_status": "TimesFM v1 ICML 2024; 2.5 public release; 2.0 500M full-power checkpoint",
       "code_or_weights": "google-research/timesfm; full-power checkpoint google/timesfm-2.0-500m-pytorch; smaller XReg smoke checkpoint google/timesfm-2.5-200m-pytorch",
       "horizon_limit_steps": 1024,
-      "primary_environment": "ahpat",
+      "primary_environment": "tsfm_routing",
       "status": "full_power_500m_shared_dev_passed",
       "notes": "Full-power TimesFM-family checkpoint google/timesfm-2.0-500m-pytorch is cached, SHA256-verified, P1c-smoke-passed via transformers TimesFmModelForPrediction target-only zero-shot, and P2-2z shared-dev-passed on the fixed P2 development subset. The google/timesfm-2.5-200m-pytorch XReg route is also P2-2aa GPU-certified shared-dev-passed with known-future calendar covariates; it is a smaller/newer adaptation-route result, not the full-power headline route. LoRA/fine-tuning routes for formal reporting require separate public-route audits.",
       "full_power_audit": {
@@ -695,7 +695,7 @@
       "venue_or_status": "proposed method",
       "code_or_weights": "to be implemented",
       "horizon_limit_steps": null,
-      "primary_environment": "ahpat",
+      "primary_environment": "tsfm_routing",
       "status": "method_placeholder",
       "notes": "Must be a real energy-conditioned adaptation mechanism, not ordinary fine-tuning."
     }

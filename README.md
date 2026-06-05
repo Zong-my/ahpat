@@ -1,6 +1,6 @@
-# AHPAT: Route-Level Qualification Protocol for Multi-Energy TSFM Forecasting
+# TSFM Routing: Route-Level Qualification Protocol for Multi-Energy TSFM Forecasting
 
-![AHPAT framework: route-level qualification protocol for multi-energy TSFM forecasting](docs/fig1_framework_design.png)
+![TSFM Routing framework: route-level qualification protocol for multi-energy TSFM forecasting](docs/fig1_framework_design.png)
 
 Reproducibility package for the paper submitted to the *Applied Energy* special issue on large models for next-generation energy systems.
 
@@ -53,7 +53,7 @@ pip install -r requirements.txt
 ## Repository Structure
 
 ```
-ahpat/
+tsfm_routing/
 ├── data/
 │   ├── energy_tsfm_canonical/           # Canonical parquet data (5 domains, ~34 MB)
 │   ├── energy_tsfm_formal_windows/      # Pre-computed formal window membership (~71 MB)
@@ -195,7 +195,7 @@ The `data/canonical/` directory contains the canonical parquet files for all fiv
 ## Citation
 
 ```bibtex
-@article{xxx2026ahpat,
+@article{xxx2026tsfm_routing,
   title={Route-Level Qualification Protocol for Multi-Energy TSFM Forecasting},
   author={xxx},
   journal={Applied Energy},
