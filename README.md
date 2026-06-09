@@ -96,7 +96,7 @@ The main orchestrator dispatches each locked route:
 ```bash
 # Execute the full locked P5 test-once queue
 python scripts/run_p5_locked_queue_executor.py \
-    --lock-csv configs/locks/execution_lock.csv \
+    --lock-csv config/locks/execution_lock.csv \
     --approval-token P5_TEST_ONCE_APPROVED_20260517
 ```
 
@@ -108,7 +108,7 @@ python scripts/run_p5_main_test_once.py \
     --model itransformer \
     --domain aidc_power_optional \
     --horizon 24h \
-    --config-source configs/routes/itransformer_aidc_power_optional_24h.json \
+    --config-source config/routes/itransformer_aidc_power_optional_24h.json \
     --split test \
     --full-train-refit \
     --run-id p5_itransformer_aidc_power_optional_24h_codex_locked \
@@ -166,7 +166,7 @@ python scripts/summarize_p6_late_tsfm_extension.py
 
 ## Data
 
-The `data/canonical/` directory contains the canonical parquet files for all five energy domains. These are the processed, anonymized datasets at their operational resolution (10--15 min). All downstream data products (P1b segments, P1c window indices, formal windows) are deterministically regenerated from these files by Step 1.
+The `data/energy_tsfm_canonical/` directory contains the canonical parquet files for all five energy domains. These are the processed, anonymized datasets at their operational resolution (10--15 min). All downstream data products (P1b segments, P1c window indices, formal windows) are deterministically regenerated from these files by Step 1.
 
 ### Data Provenance
 
@@ -180,9 +180,9 @@ The `data/canonical/` directory contains the canonical parquet files for all fiv
 
 ## Configuration
 
-- `configs/energy_tsfm_model_registry.json` — Full model registry with variant definitions, license tracking, and audit status.
-- `configs/locks/` — Pre-test frozen policy tables (H2 validation winners, H3 stress thresholds, route-level locks).
-- `configs/routes/` — Per-route hyperparameter configurations extracted from validation-phase manifests. Each JSON contains the exact `best_params` used in the formal test-once run.
+- `config/energy_tsfm_model_registry.json` — Full model registry with variant definitions, license tracking, and audit status.
+- `config/locks/` — Pre-test frozen policy tables (H2 validation winners, H3 stress thresholds, route-level locks).
+- `config/routes/` — Per-route hyperparameter configurations extracted from validation-phase manifests. Each JSON contains the exact `best_params` used in the formal test-once run.
 
 ## Key Design Principles
 
