@@ -355,8 +355,8 @@ PANELS = [
         "primary_policy": "cell_validation_winner",
         "comparator_policy": "tsfm_validation_winner",
         "range_quantile": 0.25,
-        "layer": "Claim boundary",
-        "strip": "Boundary: non-TSFM route",
+        "layer": "Non-TSFM specialist",
+        "strip": "Complementary non-TSFM route",
     },
 ]
 
