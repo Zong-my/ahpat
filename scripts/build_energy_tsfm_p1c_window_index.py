@@ -176,7 +176,7 @@ def write_report(summary: dict[str, Any]) -> None:
         "| Item | Decision | Rationale |",
         "|---|---|---|",
         "| Provincial load tail | Keep the main dataset at the load/weather timestamp intersection. Do not add the 2022-04-29 to 2022-06-17 load-only tail to the main P2 matrix. | The main matrix remains covariate-complete. A load-only tail can be a later univariate robustness dataset with a separate ID. |",
-        "| Aluminum CSVs | Include the five `yc_wenshanxiangmu_2000*.csv` files as separate series, not as one aggregated plant-level load. | This increases industrial-load breadth without making an unsupported plant-wide aggregation claim. |",
+        "| Aluminum CSVs | Include the five `aluminum_load_line_*.csv` files as separate series, not as one aggregated plant-level load. | This increases industrial-load breadth without making an unsupported plant-wide aggregation claim. |",
         "| ARENA PV metrics | Report full-day metrics and a positive-generation view. | The clipped PV target contains many valid zero-generation points; full-day-only metrics can hide daytime behavior. |",
         "| Microgrid resolution | Keep native 10-minute resolution. | Comparisons are by 4h/24h elapsed duration, not by equal native step count. |",
         "",
